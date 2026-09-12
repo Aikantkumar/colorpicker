@@ -1,0 +1,144 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import DropperButton from '../components/DropperButton.astro';
+import ImageUploader from '../components/ImageUploader.astro';
+import MagnifierCanvas from '../components/MagnifierCanvas.astro';
+import ColorSwatch from '../components/ColorSwatch.astro';
+import SeoContent from '../components/SeoContent.astro';
+import { LANGUAGES, DEFAULT_LANG, type SupportedLang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+export function getStaticPaths() {
+  const paths = Object.keys(LANGUAGES).map((code) => {
+    if (code === DEFAULT_LANG) {
+      return { params: { lang: undefined } }; // matches root '/'
+    }
+    return { params: { lang: code } }; // matches '/es/', '/ja/', etc.
+  });
+  return paths;
+}
+
+const { lang: langParam } = Astro.params;
+const lang = (langParam as SupportedLang) || DEFAULT_LANG;
+const t = useTranslations(lang);
+
+// Targeted SEO Title & Meta Description focusing on Main Keyword: color extractor
+const seoTitle = 'Color Extractor | Free Online Image & Website Color Extractor';
+const seoDescription = 'Free online color extractor. Extract exact HEX, RGB, and HSL color codes from image uploads (PNG, JPEG, SVG) or screen pixels with 200px zoom lens magnifier.';
+
+const faqLinkPath = lang === DEFAULT_LANG ? '/faq/' : `/${lang}/faq/`;
+---
+
+<Layout title={seoTitle} description={seoDescription} lang={lang}>
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 flex flex-col items-center relative">
+    
+    <!-- Premium Header Component -->
+    <Header
+      currentLang={lang}
+      title="Color Extractor"
+      subtitle={t('headerSubtitle')}
+    />
+
+    <!-- Top Impression Section: 2 Main Features Side-by-Side with Vertical Divider -->
+    <section class="w-full bg-white rounded-2xl border border-neutral-200/80 shadow-xl p-6 sm:p-8 mb-10">
+      <div class="flex flex-col md:flex-row items-stretch justify-between gap-6 md:gap-0">
+        
+        <!-- Left Feature: Dropper Lens -->
+        <div class="flex-1 flex flex-col items-center justify-between px-2 sm:px-6 text-center">
+          <h2 class="text-lg sm:text-xl font-bold text-neutral-800 tracking-tight mb-3">
+            {t('dropperHeading')}
+          </h2>
+          <DropperButton
+            dropperHelper={t('dropperHelper')}
+            dropperError={t('dropperError')}
+          />
+        </div>
+
+        <!-- Vertical Divider (Desktop) / Horizontal Divider (Mobile) -->
+        <div class="hidden md:block w-px bg-neutral-200 self-stretch my-2"></div>
+        <div class="block md:hidden h-px w-full bg-neutral-200 my-2"></div>
+
+        <!-- Right Feature: Upload Image -->
+        <div class="flex-1 flex flex-col items-center justify-between px-2 sm:px-6 text-center">
+          <h2 class="text-lg sm:text-xl font-bold text-neutral-800 tracking-tight mb-3">
+            {t('uploadHeading')}
+          </h2>
+          <ImageUploader
+            uploadHelper={t('uploadHelper')}
+            uploadTypes={t('uploadTypes')}
+          />
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Results Swatch Section (Right below features on first impression) -->
+    <section class="w-full">
+      <ColorSwatch
+        extractedTitle={t('extractedTitle')}
+        activeColor={t('activeColor')}
+        copyHex={t('copyHex')}
+        copyRgb={t('copyRgb')}
+        copyHsl={t('copyHsl')}
+        copied={t('copied')}
+        downloadPng={t('downloadPng')}
+      />
+    </section>
+
+    <!-- Mesh & 200px Zoom Lens Canvas Section -->
+    <section class="w-full mt-4">
+      <MagnifierCanvas
+        meshHeading={t('meshHeading')}
+        meshSubheading={t('meshSubheading')}
+        defaultMeshStatus={t('defaultMeshStatus')}
+        uploadedStatus={t('uploadedStatus')}
+        lensLabel={t('lensLabel')}
+        zoomLabel={t('zoomLabel')}
+      />
+    </section>
+
+    <!-- 800 - 1200 Words SEO Guide Content (After main components) -->
+    <SeoContent />
+
+    <!-- FAQ Teaser Link Section -->
+    <section class="w-full max-w-4xl bg-neutral-900 text-white rounded-2xl p-6 sm:p-8 text-center my-6 shadow-xl flex flex-col items-center">
+      <h3 class="text-2xl font-extrabold">Have Questions About Color Extraction?</h3>
+      <p class="text-xs sm:text-sm text-neutral-300 mt-2 max-w-xl">
+        Check out our comprehensive FAQ page answering all questions about extracting color from pictures, free color pickers, font finders, and color codes.
+      </p>
+      <a
+        href={faqLinkPath}
+        class="mt-4 inline-flex items-center space-x-2 bg-white text-neutral-900 hover:bg-neutral-100 px-6 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md"
+      >
+        <span>View All 13 FAQ Questions</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+    </section>
+
+    <!-- Footer with Language & FAQ Links -->
+    <footer class="mt-16 pt-8 border-t border-neutral-200/80 w-full text-center text-xs text-neutral-400 font-medium flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p>© {new Date().getFullYear()} {t('footerText')}</p>
+      
+      <div class="flex flex-wrap items-center justify-center gap-3 text-neutral-500">
+        <a href={faqLinkPath} class="font-bold text-neutral-800 hover:underline">FAQ</a>
+        <span>•</span>
+        {Object.entries(LANGUAGES).map(([code, info]) => (
+          <a
+            href={code === 'en' ? '/' : `/${code}/`}
+            class={`px-1.5 py-0.5 rounded transition-colors ${
+              code === lang
+                ? 'font-bold text-neutral-900 underline'
+                : 'hover:text-neutral-900'
+            }`}
+          >
+            {info.name}
+          </a>
+        ))}
+      </div>
+    </footer>
+
+  </main>
+</Layout>

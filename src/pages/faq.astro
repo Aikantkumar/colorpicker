@@ -1,0 +1,63 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import FaqSection from '../components/FaqSection.astro';
+import { FAQ_ITEMS } from '../data/faqData';
+
+const pageTitle = 'Color Extractor FAQ | Free Image & Screen Color Picker Answers';
+const pageDescription = 'Frequently asked questions about color extraction, extracting HEX color codes from photos, image zoom magnifier, color picker tools, and color theory.';
+
+// Generate FAQPage JSON-LD Schema required for Google Rich Snippets
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer
+    }
+  }))
+};
+---
+
+<Layout title={pageTitle} description={pageDescription} lang="en">
+  <!-- Inject JSON-LD Schema for Google FAQ Rich Snippets -->
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 flex flex-col items-center">
+    <!-- Header -->
+    <Header
+      currentLang="en"
+      title="Color Extractor FAQ"
+      subtitle="Everything you need to know about extracting color from images, finding HEX codes, and color picker tools."
+    />
+
+    <!-- FAQ Accordion Section -->
+    <FaqSection />
+
+    <!-- Back to Main Tool CTA -->
+    <div class="mt-8 text-center">
+      <a
+        href="/"
+        class="inline-flex items-center space-x-2 bg-neutral-900 text-white hover:bg-neutral-800 px-6 py-3 rounded-xl text-sm font-semibold shadow-md hover:shadow-lg transition-all"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        <span>Back to Color Extractor Tool</span>
+      </a>
+    </div>
+
+    <!-- Minimalist Footer -->
+    <footer class="mt-16 pt-8 border-t border-neutral-200/80 w-full text-center text-xs text-neutral-400 font-medium flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p>© {new Date().getFullYear()} Pick Color Online. All questions answered for designers & developers.</p>
+      <div class="flex items-center space-x-4">
+        <a href="/" class="hover:text-neutral-900">Color Extractor Tool</a>
+        <span>•</span>
+        <a href="/faq/" class="hover:text-neutral-900 font-semibold text-neutral-700">FAQ</a>
+      </div>
+    </footer>
+  </main>
+</Layout>

@@ -1,0 +1,263 @@
+---
+interface Props {
+  meshHeading?: string;
+  meshSubheading?: string;
+  defaultMeshStatus?: string;
+  uploadedStatus?: string;
+  lensLabel?: string;
+  zoomLabel?: string;
+}
+
+const {
+  meshHeading = 'Pick the color from image using 200px zoom lens',
+  meshSubheading = 'Hover over the image to activate the 200px magnifier lens • Click anywhere to select color',
+  defaultMeshStatus = 'Default Palette Mesh Loaded',
+  uploadedStatus = 'Uploaded Image',
+  lensLabel = 'Lens',
+  zoomLabel = 'Zoom'
+} = Astro.props;
+---
+<div class="w-full flex flex-col items-center">
+  <!-- Heading requested by user with bold, bigger size & cursive text -->
+  <div id="mesh-section-top" class="pt-6 pb-3 text-center scroll-mt-6">
+    <h2 class="font-cursive text-3xl sm:text-4xl md:text-5xl font-bold text-neutral-900 tracking-wide drop-shadow-sm select-none">
+      {meshHeading}
+    </h2>
+    <p class="text-xs sm:text-sm text-neutral-500 font-medium mt-1">
+      {meshSubheading}
+    </p>
+  </div>
+
+  <!-- Canvas Container -->
+  <div class="w-full max-w-4xl bg-white rounded-2xl border border-neutral-200/80 shadow-lg overflow-hidden relative group my-3">
+    <!-- Overlay bar with controls / status -->
+    <div class="bg-neutral-100/90 backdrop-blur-sm border-b border-neutral-200 px-4 py-2 flex items-center justify-between text-xs text-neutral-600 font-mono">
+      <div class="flex items-center space-x-2">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span id="canvas-status-text" data-default-text={defaultMeshStatus} data-uploaded-text={uploadedStatus}>
+          {defaultMeshStatus}
+        </span>
+      </div>
+      <div class="hidden sm:flex items-center space-x-4">
+        <span>{lensLabel}: <strong>200px</strong></span>
+        <span>{zoomLabel}: <strong>2.5x</strong></span>
+      </div>
+    </div>
+
+    <!-- Canvas wrapper -->
+    <div class="relative w-full flex justify-center items-center bg-neutral-950/5 min-h-[320px] cursor-crosshair overflow-hidden" id="canvas-wrapper">
+      <canvas id="color-canvas" class="max-w-full h-auto block select-none"></canvas>
+      
+      <!-- Live Lens Info Tooltip -->
+      <div id="lens-tooltip" class="pointer-events-none fixed z-50 hidden transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+        <!-- Circular Lens Overlay with shadow & ring -->
+        <div id="lens-circle" class="w-[200px] h-[200px] rounded-full border-4 border-white shadow-2xl shadow-black/40 overflow-hidden relative ring-1 ring-black/20">
+          <canvas id="lens-canvas" width="200" height="200" class="w-full h-full block"></canvas>
+          <!-- Center Crosshair -->
+          <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div class="w-4 h-4 border border-white/80 rounded-full flex items-center justify-center">
+              <div class="w-1 h-1 bg-red-500 rounded-full"></div>
+            </div>
+            <div class="absolute w-[1px] h-4 bg-white/60"></div>
+            <div class="absolute h-[1px] w-4 bg-white/60"></div>
+          </div>
+        </div>
+        <!-- Live Color Badge under lens -->
+        <div id="lens-color-badge" class="mt-2 bg-neutral-900/90 text-white font-mono text-xs px-2.5 py-1 rounded-full shadow-lg border border-neutral-700 backdrop-blur-md flex items-center space-x-1.5">
+          <span id="lens-color-dot" class="w-3 h-3 rounded-full border border-white/40"></span>
+          <span id="lens-hex-text">#FFFFFF</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('color-canvas') as HTMLCanvasElement | null;
+  const canvasWrapper = document.getElementById('canvas-wrapper');
+  const lensTooltip = document.getElementById('lens-tooltip');
+  const lensCanvas = document.getElementById('lens-canvas') as HTMLCanvasElement | null;
+  const lensColorDot = document.getElementById('lens-color-dot');
+  const lensHexText = document.getElementById('lens-hex-text');
+  const statusText = document.getElementById('canvas-status-text');
+
+  if (canvas && lensCanvas && canvasWrapper) {
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const lensCtx = lensCanvas.getContext('2d', { willReadFrequently: true });
+    
+    let loadedImage: HTMLImageElement | null = null;
+    const LENS_DIAMETER = 200; // 200px zoom lens
+    const ZOOM_FACTOR = 2.5;
+
+    function createDefaultMesh() {
+      const offscreen = document.createElement('canvas');
+      offscreen.width = 1200;
+      offscreen.height = 700;
+      const oCtx = offscreen.getContext('2d');
+      if (!oCtx) return;
+
+      const grad1 = oCtx.createRadialGradient(200, 200, 50, 400, 400, 600);
+      grad1.addColorStop(0, '#ff007f');
+      grad1.addColorStop(0.5, '#7928ca');
+      grad1.addColorStop(1, '#007cf0');
+      oCtx.fillStyle = grad1;
+      oCtx.fillRect(0, 0, 1200, 700);
+
+      const grad2 = oCtx.createRadialGradient(1000, 500, 50, 800, 300, 700);
+      grad2.addColorStop(0, '#00dfd8');
+      grad2.addColorStop(0.5, '#ff4d4d');
+      grad2.addColorStop(1, '#f9cb28');
+      oCtx.globalCompositeOperation = 'screen';
+      oCtx.fillStyle = grad2;
+      oCtx.fillRect(0, 0, 1200, 700);
+
+      oCtx.globalCompositeOperation = 'source-over';
+      const colors = ['#ff0080', '#7928ca', '#0070f3', '#50e3c2', '#f5a623', '#ee0000', '#eb367f', '#171717', '#ffffff'];
+      const cols = 9;
+      const cellW = 1200 / cols;
+      for (let i = 0; i < cols; i++) {
+        oCtx.fillStyle = colors[i % colors.length];
+        oCtx.beginPath();
+        oCtx.roundRect(i * cellW + 15, 520, cellW - 30, 140, 16);
+        oCtx.fill();
+        oCtx.strokeStyle = 'rgba(255,255,255,0.4)';
+        oCtx.lineWidth = 4;
+        oCtx.stroke();
+      }
+
+      oCtx.fillStyle = 'rgba(255,255,255,0.95)';
+      oCtx.font = 'bold 36px sans-serif';
+      oCtx.textAlign = 'center';
+      oCtx.fillText('Interactive 200px Magnifier Color Mesh', 600, 260);
+      oCtx.font = '22px sans-serif';
+      oCtx.fillStyle = 'rgba(255,255,255,0.8)';
+      oCtx.fillText('Hover to magnify pixels • Click to extract exact HEX/RGB', 600, 310);
+
+      const img = new Image();
+      img.onload = () => {
+        loadedImage = img;
+        renderCanvas();
+      };
+      img.src = offscreen.toDataURL();
+    }
+
+    function renderCanvas() {
+      if (!loadedImage || !canvas || !ctx) return;
+      canvas.width = loadedImage.naturalWidth || loadedImage.width;
+      canvas.height = loadedImage.naturalHeight || loadedImage.height;
+      ctx.drawImage(loadedImage, 0, 0);
+    }
+
+    function getCanvasCoordinates(e: MouseEvent | TouchEvent) {
+      if (!canvas) return { x: 0, y: 0, clientX: 0, clientY: 0 };
+      const rect = canvas.getBoundingClientRect();
+      const clientX = 'touches' in e ? e.touches[0].clientX : (e as MouseEvent).clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : (e as MouseEvent).clientY;
+      
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+
+      const x = (clientX - rect.left) * scaleX;
+      const y = (clientY - rect.top) * scaleY;
+
+      return { x, y, clientX, clientY };
+    }
+
+    function updateLens(e: MouseEvent | TouchEvent) {
+      if (!canvas || !ctx || !lensCanvas || !lensCtx || !lensTooltip || !loadedImage) return;
+
+      const { x, y, clientX, clientY } = getCanvasCoordinates(e);
+
+      if (x < 0 || x > canvas.width || y < 0 || y > canvas.height) {
+        lensTooltip.classList.add('hidden');
+        return;
+      }
+
+      lensTooltip.classList.remove('hidden');
+      lensTooltip.style.left = `${clientX}px`;
+      lensTooltip.style.top = `${clientY - 120}px`;
+
+      lensCtx.clearRect(0, 0, LENS_DIAMETER, LENS_DIAMETER);
+
+      const sourceW = LENS_DIAMETER / ZOOM_FACTOR;
+      const sourceH = LENS_DIAMETER / ZOOM_FACTOR;
+      const sourceX = x - sourceW / 2;
+      const sourceY = y - sourceH / 2;
+
+      lensCtx.imageSmoothingEnabled = false;
+      lensCtx.drawImage(
+        canvas,
+        sourceX,
+        sourceY,
+        sourceW,
+        sourceH,
+        0,
+        0,
+        LENS_DIAMETER,
+        LENS_DIAMETER
+      );
+
+      try {
+        const pixelData = ctx.getImageData(Math.floor(x), Math.floor(y), 1, 1).data;
+        const hex = `#${((1 << 24) + (pixelData[0] << 16) + (pixelData[1] << 8) + pixelData[2]).toString(16).slice(1).toUpperCase()}`;
+        
+        if (lensColorDot) lensColorDot.style.backgroundColor = hex;
+        if (lensHexText) lensHexText.textContent = hex;
+      } catch (err) {}
+    }
+
+    function pickColor(e: MouseEvent | TouchEvent) {
+      if (!canvas || !ctx) return;
+      const { x, y } = getCanvasCoordinates(e);
+      try {
+        const pixelData = ctx.getImageData(Math.floor(x), Math.floor(y), 1, 1).data;
+        const hexColor = `#${((1 << 24) + (pixelData[0] << 16) + (pixelData[1] << 8) + pixelData[2]).toString(16).slice(1).toUpperCase()}`;
+
+        window.dispatchEvent(new CustomEvent('colorpicked', {
+          detail: { color: hexColor, source: 'image-canvas' }
+        }));
+
+        const resultSection = document.getElementById('color-result-section');
+        if (resultSection) {
+          resultSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      } catch (err) {
+        console.error('Failed to extract color from canvas pixel', err);
+      }
+    }
+
+    canvas.addEventListener('mousemove', updateLens);
+    canvas.addEventListener('mouseleave', () => {
+      if (lensTooltip) lensTooltip.classList.add('hidden');
+    });
+    canvas.addEventListener('click', pickColor);
+
+    canvas.addEventListener('touchmove', (e) => {
+      updateLens(e);
+      e.preventDefault();
+    }, { passive: false });
+    canvas.addEventListener('touchstart', pickColor);
+
+    window.addEventListener('imageuploaded', (e: any) => {
+      const { url, fileName } = e.detail;
+      if (!url) return;
+
+      const img = new Image();
+      img.onload = () => {
+        loadedImage = img;
+        renderCanvas();
+        if (statusText) {
+          const prefix = statusText.getAttribute('data-uploaded-text') || 'Uploaded Image';
+          statusText.textContent = `${prefix}: ${fileName || 'Custom Image'}`;
+        }
+      };
+      img.src = url;
+    });
+
+    createDefaultMesh();
+
+    window.addEventListener('resize', () => {
+      if (loadedImage) renderCanvas();
+    });
+  }
+</script>
