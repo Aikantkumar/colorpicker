@@ -27,6 +27,18 @@ const canonicalUrl = `https://pickcolor.online${canonicalPath}`;
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
 
+    <!-- Inline Script to prevent FOUC (Flash of wrong theme) -->
+    <script is:inline>
+      (function() {
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+
     <!-- HREFLANG Meta Markup for Multi-language Search Engine Ranking -->
     {hreflangLinks.map((link) => (
       <link rel="alternate" hreflang={link.lang} href={link.href} />
@@ -48,7 +60,7 @@ const canonicalUrl = `https://pickcolor.online${canonicalPath}`;
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "Pick Color Online",
+      "name": "Color Extractor",
       "url": canonicalUrl,
       "description": description,
       "applicationCategory": "DeveloperApplication",
@@ -56,7 +68,20 @@ const canonicalUrl = `https://pickcolor.online${canonicalPath}`;
       "inLanguage": ["en", "es", "ja", "fr", "de", "pt", "ko", "it"]
     })} />
   </head>
-  <body class="bg-[#fafafa] text-[#171717] font-sans antialiased min-h-screen selection:bg-neutral-900 selection:text-white">
+  <body class="bg-[#fafafa] dark:bg-[#000000] text-[#171717] dark:text-[#f5f5f5] font-sans antialiased min-h-screen selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-neutral-900 relative">
+    
+    <!-- LIGHT MODE: Moving 7-Color Palette Grid Background -->
+    <div class="bg-light-color-palette"></div>
+
+    <!-- DARK MODE: Black Background + Multiple Moving Green Aurora Borealis Strips -->
+    <div class="bg-dark-aurora-container">
+      <div class="aurora-strip aurora-strip-1"></div>
+      <div class="aurora-strip aurora-strip-2"></div>
+      <div class="aurora-strip aurora-strip-3"></div>
+      <div class="aurora-strip aurora-strip-4"></div>
+    </div>
+
+    <!-- Main Content Container -->
     <slot />
   </body>
 </html>

@@ -13,12 +13,12 @@ const {
   <button
     id="dropper-button"
     type="button"
-    class="group relative flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-tr from-neutral-900 via-neutral-800 to-neutral-900 text-white shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 ring-4 ring-neutral-200/80 hover:ring-neutral-400 cursor-pointer focus:outline-none focus:ring-neutral-900"
+    class="group relative flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-tr from-neutral-900 via-neutral-800 to-neutral-900 text-white shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 ring-4 ring-neutral-200/80 dark:ring-neutral-700/80 hover:ring-neutral-400 dark:hover:ring-neutral-500 cursor-pointer focus:outline-none focus:ring-neutral-900 dark:focus:ring-white"
     title="Click to pick any color from your screen"
     aria-label="Pick color from your screen"
   >
     <!-- Background pulse indicator -->
-    <span class="absolute inset-0 rounded-full bg-indigo-500/20 group-hover:bg-indigo-500/30 blur-md transition-all"></span>
+    <span class="absolute inset-0 rounded-full bg-indigo-500/20 group-hover:bg-indigo-500/40 blur-md transition-all"></span>
     
     <!-- SVG Icon -->
     <svg
@@ -38,11 +38,11 @@ const {
     </svg>
   </button>
   
-  <p class="text-xs text-neutral-500 mt-3 font-medium text-center">
+  <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-3 font-medium text-center">
     {dropperHelper}
   </p>
 
-  <div id="dropper-error" class="hidden text-xs text-amber-600 mt-2 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-md text-center max-w-xs">
+  <div id="dropper-error" class="hidden text-xs text-amber-600 dark:text-amber-300 mt-2 bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800/80 px-3 py-1.5 rounded-md text-center max-w-xs">
     {dropperError}
   </div>
 </div>
@@ -66,7 +66,7 @@ const {
               detail: { color: hexColor, source: 'dropper' }
             }));
 
-            // User requirement: When user selects color using dropper, website should scroll automatically to result color area (smooth scroll), such that result color area is in the MID of screen.
+            // Scroll to color swatch section
             const resultSection = document.getElementById('color-result-section');
             if (resultSection) {
               resultSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
