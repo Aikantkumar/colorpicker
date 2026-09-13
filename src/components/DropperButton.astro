@@ -13,17 +13,17 @@ const {
   <button
     id="dropper-button"
     type="button"
-    class="group relative flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-tr from-neutral-900 via-neutral-800 to-neutral-900 text-white shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 ring-4 ring-neutral-200/80 dark:ring-neutral-700/80 hover:ring-neutral-400 dark:hover:ring-neutral-500 cursor-pointer focus:outline-none focus:ring-neutral-900 dark:focus:ring-white"
+    class="group relative flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-tr from-surface-tertiary via-surface-secondary to-surface-tertiary text-text-primary shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 ring-4 ring-border/80 hover:ring-border-strong cursor-pointer focus:outline-none focus:ring-icon"
     title="Click to pick any color from your screen"
     aria-label="Pick color from your screen"
   >
     <!-- Background pulse indicator -->
-    <span class="absolute inset-0 rounded-full bg-indigo-500/20 group-hover:bg-indigo-500/40 blur-md transition-all"></span>
+    <span class="absolute inset-0 rounded-full bg-accent-purple/20 group-hover:bg-accent-purple/40 blur-md transition-all"></span>
     
     <!-- SVG Icon -->
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      class="w-10 h-10 text-white group-hover:rotate-12 transition-transform duration-300 z-10"
+      class="w-10 h-10 text-text-primary group-hover:rotate-12 transition-transform duration-300 z-10"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -38,11 +38,11 @@ const {
     </svg>
   </button>
   
-  <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-3 font-medium text-center">
+  <p class="text-xs text-text-muted mt-3 font-medium text-center">
     {dropperHelper}
   </p>
 
-  <div id="dropper-error" class="hidden text-xs text-amber-600 dark:text-amber-300 mt-2 bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800/80 px-3 py-1.5 rounded-md text-center max-w-xs">
+  <div id="dropper-error" class="hidden text-xs text-warning mt-2 bg-warning-bg border border-warning/30 px-3 py-1.5 rounded-md text-center max-w-xs">
     {dropperError}
   </div>
 </div>

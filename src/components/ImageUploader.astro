@@ -12,7 +12,7 @@ const {
 <div class="w-full flex flex-col items-center justify-center py-2">
   <div
     id="drop-zone"
-    class="w-full relative flex flex-col items-center justify-center p-6 border-2 border-dashed border-neutral-300 rounded-xl bg-white hover:bg-neutral-50/80 hover:border-neutral-800 transition-all duration-200 cursor-pointer group"
+    class="w-full relative flex flex-col items-center justify-center p-6 border-2 border-dashed border-border rounded-xl bg-surface hover:bg-surface-secondary hover:border-border-strong transition-all duration-200 cursor-pointer group"
   >
     <input
       type="file"
@@ -22,10 +22,10 @@ const {
       aria-label="Upload Image (PNG, JPEG, SVG)"
     />
 
-    <div class="w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-neutral-900 group-hover:text-white transition-all duration-200">
+    <div class="w-12 h-12 rounded-full bg-surface-tertiary flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-accent-purple group-hover:text-white transition-all duration-200">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="w-6 h-6 text-neutral-700 group-hover:text-white transition-colors"
+        class="w-6 h-6 text-icon group-hover:text-white transition-colors"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -35,10 +35,10 @@ const {
       </svg>
     </div>
 
-    <p class="text-sm font-semibold text-neutral-800 text-center">
+    <p class="text-sm font-semibold text-text-primary text-center">
       {uploadHelper}
     </p>
-    <p class="text-xs text-neutral-400 mt-1 font-medium">
+    <p class="text-xs text-text-muted mt-1 font-medium">
       {uploadTypes}
     </p>
   </div>
@@ -94,7 +94,7 @@ const {
       dropZone.addEventListener(eventName, (e) => {
         e.preventDefault();
         e.stopPropagation();
-        dropZone.classList.add('border-neutral-900', 'bg-neutral-100/50');
+        dropZone.classList.add('border-border-strong', 'bg-surface-secondary');
       }, false);
     });
 
@@ -102,7 +102,7 @@ const {
       dropZone.addEventListener(eventName, (e) => {
         e.preventDefault();
         e.stopPropagation();
-        dropZone.classList.remove('border-neutral-900', 'bg-neutral-100/50');
+        dropZone.classList.remove('border-border-strong', 'bg-surface-secondary');
       }, false);
     });
 

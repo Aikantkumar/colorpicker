@@ -41,12 +41,12 @@ const faqLinkPath = lang === DEFAULT_LANG ? '/faq/' : `/${lang}/faq/`;
     />
 
     <!-- Top Impression Section: 2 Main Features Side-by-Side with Vertical Divider -->
-    <section class="w-full bg-white rounded-2xl border border-neutral-200/80 shadow-xl p-6 sm:p-8 mb-10">
+    <section class="w-full card rounded-2xl shadow-xl p-6 sm:p-8 mb-10">
       <div class="flex flex-col md:flex-row items-stretch justify-between gap-6 md:gap-0">
         
         <!-- Left Feature: Dropper Lens -->
         <div class="flex-1 flex flex-col items-center justify-between px-2 sm:px-6 text-center">
-          <h2 class="text-lg sm:text-xl font-bold text-neutral-800 tracking-tight mb-3">
+          <h2 class="text-lg sm:text-xl font-bold text-text-primary tracking-tight mb-3">
             {t('dropperHeading')}
           </h2>
           <DropperButton
@@ -56,12 +56,12 @@ const faqLinkPath = lang === DEFAULT_LANG ? '/faq/' : `/${lang}/faq/`;
         </div>
 
         <!-- Vertical Divider (Desktop) / Horizontal Divider (Mobile) -->
-        <div class="hidden md:block w-px bg-neutral-200 self-stretch my-2"></div>
-        <div class="block md:hidden h-px w-full bg-neutral-200 my-2"></div>
+        <div class="hidden md:block w-px bg-border self-stretch my-2"></div>
+        <div class="block md:hidden h-px w-full bg-border my-2"></div>
 
         <!-- Right Feature: Upload Image -->
         <div class="flex-1 flex flex-col items-center justify-between px-2 sm:px-6 text-center">
-          <h2 class="text-lg sm:text-xl font-bold text-neutral-800 tracking-tight mb-3">
+          <h2 class="text-lg sm:text-xl font-bold text-text-primary tracking-tight mb-3">
             {t('uploadHeading')}
           </h2>
           <ImageUploader
@@ -102,14 +102,14 @@ const faqLinkPath = lang === DEFAULT_LANG ? '/faq/' : `/${lang}/faq/`;
     <SeoContent />
 
     <!-- FAQ Teaser Link Section -->
-    <section class="w-full max-w-4xl bg-neutral-900 text-white rounded-2xl p-6 sm:p-8 text-center my-6 shadow-xl flex flex-col items-center">
-      <h3 class="text-2xl font-extrabold">Have Questions About Color Extraction?</h3>
-      <p class="text-xs sm:text-sm text-neutral-300 mt-2 max-w-xl">
+    <section class="w-full max-w-4xl bg-surface-tertiary text-text-primary rounded-2xl p-6 sm:p-8 text-center my-6 shadow-xl flex flex-col items-center border border-border">
+      <h3 class="text-2xl font-extrabold text-text-primary">Have Questions About Color Extraction?</h3>
+      <p class="text-xs sm:text-sm text-text-muted mt-2 max-w-xl">
         Check out our comprehensive FAQ page answering all questions about extracting color from pictures, free color pickers, font finders, and color codes.
       </p>
       <a
         href={faqLinkPath}
-        class="mt-4 inline-flex items-center space-x-2 bg-white text-neutral-900 hover:bg-neutral-100 px-6 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md"
+        class="mt-4 inline-flex items-center space-x-2 btn-primary text-text-on-accent hover:bg-surface-tertiary px-6 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md"
       >
         <span>View All 13 FAQ Questions</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -119,19 +119,19 @@ const faqLinkPath = lang === DEFAULT_LANG ? '/faq/' : `/${lang}/faq/`;
     </section>
 
     <!-- Footer with Language & FAQ Links -->
-    <footer class="mt-16 pt-8 border-t border-neutral-200/80 w-full text-center text-xs text-neutral-400 font-medium flex flex-col sm:flex-row items-center justify-between gap-4">
+    <footer class="mt-16 pt-8 border-t border-border w-full text-center text-xs text-text-muted font-medium flex flex-col sm:flex-row items-center justify-between gap-4">
       <p>© {new Date().getFullYear()} {t('footerText')}</p>
       
-      <div class="flex flex-wrap items-center justify-center gap-3 text-neutral-500">
-        <a href={faqLinkPath} class="font-bold text-neutral-800 hover:underline">FAQ</a>
+      <div class="flex flex-wrap items-center justify-center gap-3 text-text-muted">
+        <a href={faqLinkPath} class="font-bold text-text-primary hover:underline">FAQ</a>
         <span>•</span>
         {Object.entries(LANGUAGES).map(([code, info]) => (
           <a
             href={code === 'en' ? '/' : `/${code}/`}
             class={`px-1.5 py-0.5 rounded transition-colors ${
               code === lang
-                ? 'font-bold text-neutral-900 underline'
-                : 'hover:text-neutral-900'
+                ? 'font-bold text-text-primary underline'
+                : 'hover:text-text-primary'
             }`}
           >
             {info.name}
