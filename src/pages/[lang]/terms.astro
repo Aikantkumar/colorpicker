@@ -1,0 +1,103 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { LANGUAGES, DEFAULT_LANG, type SupportedLang } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return Object.keys(LANGUAGES).map((code) => ({
+    params: { lang: code },
+  }));
+}
+
+const { lang: langParam } = Astro.params;
+const lang = (langParam as SupportedLang) || DEFAULT_LANG;
+const t = useTranslations(lang);
+
+const pageTitle = t('termsTitle');
+const pageDescription = t('termsSubtitle');
+
+const currentYear = new Date().getFullYear();
+const lastUpdated = `January ${currentYear}`;
+---
+
+<Layout title={pageTitle} description={pageDescription} lang={lang}>
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 flex flex-col items-center">
+    <!-- Header -->
+    <Header
+      currentLang={lang}
+      title={t('termsTitle')}
+      subtitle={t('termsSubtitle')}
+    />
+
+    <!-- Terms & Conditions Content -->
+    <article class="w-full max-w-3xl prose prose-neutral dark:prose-invert mt-8">
+      <div class="mb-8 text-sm text-text-muted">
+        <time datetime={`${currentYear}-01-01`}>{t('termsLastUpdated')}: {lastUpdated}</time>
+      </div>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">{t('termsAcceptance')}</h2>
+        <p class="text-text-secondary leading-relaxed">{t('termsAcceptanceDesc')}</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">{t('termsUseLicense')}</h2>
+        <p class="text-text-secondary leading-relaxed">{t('termsUseLicenseDesc')}</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">{t('termsRestrictions')}</h2>
+        <p class="text-text-secondary leading-relaxed mb-4">{t('termsRestrictionsDesc')}</p>
+        <ul class="list-disc list-inside space-y-2 text-text-secondary leading-relaxed">
+          <li>{t('termsRestriction1')}</li>
+          <li>{t('termsRestriction2')}</li>
+          <li>{t('termsRestriction3')}</li>
+          <li>{t('termsRestriction4')}</li>
+        </ul>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">{t('termsIP')}</h2>
+        <p class="text-text-secondary leading-relaxed">{t('termsIPDesc')}</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">{t('termsDisclaimer')}</h2>
+        <p class="text-text-secondary leading-relaxed">{t('termsDisclaimerDesc')}</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">{t('termsLiability')}</h2>
+        <p class="text-text-secondary leading-relaxed">{t('termsLiabilityDesc')}</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">{t('termsChanges')}</h2>
+        <p class="text-text-secondary leading-relaxed">{t('termsChangesDesc')}</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">{t('termsGoverningLaw')}</h2>
+        <p class="text-text-secondary leading-relaxed">{t('termsGoverningLawDesc')}</p>
+      </section>
+    </article>
+
+    <!-- Back to Main Tool CTA -->
+    <div class="mt-10 text-center">
+      <a
+        href={lang === DEFAULT_LANG ? '/' : `/${lang}/`}
+        class="inline-flex items-center space-x-2 btn-primary text-text-on-accent hover:bg-surface-tertiary px-6 py-3 rounded-xl text-sm font-semibold shadow-md hover:shadow-lg transition-all"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        <span>{t('backToTool')}</span>
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <Footer currentLang={lang} />
+  </main>
+</Layout>

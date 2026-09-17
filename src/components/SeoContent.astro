@@ -1,155 +1,217 @@
 ---
+import type { SupportedLang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  currentLang?: SupportedLang;
+}
+
+const { currentLang = 'en' } = Astro.props;
+const t = useTranslations(currentLang);
 ---
 <article class="w-full max-w-4xl mx-auto my-12 card rounded-2xl p-6 sm:p-10 shadow-xl leading-relaxed text-text-secondary space-y-8">
   <!-- Article Header -->
   <header class="border-b border-border-subtle pb-6">
     <div class="inline-block bg-accent-purple/10 text-accent-purple font-mono text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-2">
-      Complete Guide & Documentation
+      {t('seoGuideBadge')}
     </div>
     <h2 class="text-2xl sm:text-3xl font-extrabold text-text-primary tracking-tight">
-      The Ultimate Online Color Extractor for Images & Screens
+      {t('seoGuideTitle')}
     </h2>
     <p class="text-sm text-text-muted mt-2 font-medium">
-      Learn how our free website color extractor helps designers, developers, and creators extract exact HEX, RGB, and HSL values from any photo or screen pixel.
+      {t('seoGuideDesc')}
     </p>
   </header>
 
-  <!-- Section 1: What is a Color Extractor? -->
+  <!-- Section 1: What is a Color Extractor and Color Finder? -->
   <section class="space-y-3">
     <h3 class="text-xl font-bold text-text-primary flex items-center space-x-2">
       <span class="w-2 h-2 rounded-full bg-text-primary"></span>
-      <span>What is a Color Extractor?</span>
+      <span>{t('seoSec1Title')}</span>
     </h3>
     <p class="text-sm sm:text-base text-text-secondary">
-      A <strong>color extractor</strong> is an essential web-based design utility designed to inspect, isolate, and identify precise color values from digital media. Whether you need to sample a vibrant gradient from a web template, extract a brand palette from a logo, or sample pixel values from a photograph, our free online <strong>color extractor</strong> delivers pixel-perfect accuracy in real-time.
+      {t('seoSec1P1')}
     </p>
     <p class="text-sm sm:text-base text-text-secondary">
-      Unlike generic color utilities, a modern <strong>website color extractor</strong> provides dual sampling capabilities: an instant screen dropper lens for selecting any pixel directly from your browser viewport, and a high-precision <strong>png color extractor</strong> canvas that lets you zoom into uploaded image files with a specialized 200px magnification lens.
+      {t('seoSec1P2')}
+    </p>
+    <p class="text-sm sm:text-base text-text-secondary">
+      {t('seoSec1P3')}
     </p>
   </section>
 
-  <!-- Section 2: Why Use an Online Photo Color Extractor? -->
+  <!-- Section 2: Why Use Our Online Photo Color Extractor & Color Finder? -->
   <section class="space-y-3">
     <h3 class="text-xl font-bold text-text-primary flex items-center space-x-2">
       <span class="w-2 h-2 rounded-full bg-text-primary"></span>
-      <span>Why Use Our Online Photo Color Extractor?</span>
+      <span>{t('seoSec2Title')}</span>
     </h3>
     <p class="text-sm sm:text-base text-text-secondary">
-      Digital design relies heavily on color harmony and brand consistency. Using an advanced <strong>photo color extractor</strong> offers distinct advantages for professionals and hobbyists alike:
+      {t('seoSec2P1')}
     </p>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
       <div class="card bg-surface-secondary p-4 rounded-xl border border-border-subtle">
-        <h4 class="font-bold text-text-primary text-sm mb-1">🎯 100% Pixel Accuracy</h4>
-        <p class="text-xs text-text-secondary">Our built-in 200px zoom lens enlarges your uploaded picture by 2.5x, allowing you to select microscopic pixels with zero guesswork.</p>
+        <h4 class="font-bold text-text-primary text-sm mb-1">{t('seoSec2Card1Title')}</h4>
+        <p class="text-xs text-text-secondary">{t('seoSec2Card1Desc')}</p>
       </div>
       <div class="card bg-surface-secondary p-4 rounded-xl border border-border-subtle">
-        <h4 class="font-bold text-text-primary text-sm mb-1">⚡ Instant Multi-Format Output</h4>
-        <p class="text-xs text-text-secondary">As a comprehensive <strong>hex color extractor</strong>, we automatically convert every picked color into HEX, RGB, and HSL formats with one-click copy buttons.</p>
+        <h4 class="font-bold text-text-primary text-sm mb-1">{t('seoSec2Card2Title')}</h4>
+        <p class="text-xs text-text-secondary">{t('seoSec2Card2Desc')}</p>
       </div>
       <div class="card bg-surface-secondary p-4 rounded-xl border border-border-subtle">
-        <h4 class="font-bold text-text-primary text-sm mb-1">🔒 Private & Secure</h4>
-        <p class="text-xs text-text-secondary">When you use our <strong>color extractor upload image</strong> feature, your photos are processed entirely inside your local browser memory—never uploaded to external servers.</p>
+        <h4 class="font-bold text-text-primary text-sm mb-1">{t('seoSec2Card3Title')}</h4>
+        <p class="text-xs text-text-secondary">{t('seoSec2Card3Desc')}</p>
       </div>
       <div class="card bg-surface-secondary p-4 rounded-xl border border-border-subtle">
-        <h4 class="font-bold text-text-primary text-sm mb-1">📥 Exportable Color Cards</h4>
-        <p class="text-xs text-text-secondary">Generate and download PNG color spec cards instantly to share color palettes directly with clients, team members, or style guides.</p>
+        <h4 class="font-bold text-text-primary text-sm mb-1">{t('seoSec2Card4Title')}</h4>
+        <p class="text-xs text-text-secondary">{t('seoSec2Card4Desc')}</p>
       </div>
     </div>
   </section>
 
-  <!-- Section 3: How to Use the Color Extractor from Image -->
+  <!-- Section 3: How It Works - Color Extractor & Color Finder Process -->
   <section class="space-y-4">
     <h3 class="text-xl font-bold text-text-primary flex items-center space-x-2">
       <span class="w-2 h-2 rounded-full bg-text-primary"></span>
-      <span>Step-by-Step Guide: How to Extract Color from an Image</span>
+      <span>{t('seoSec3Title')}</span>
     </h3>
     <p class="text-sm sm:text-base text-text-secondary">
-      Extracting exact color values from your photos or design mockups using our <strong>color extractor from image</strong> workflow takes less than five seconds:
+      {t('seoSec3P1')}
     </p>
 
-    <ol class="list-decimal list-inside space-y-2 text-sm sm:text-base text-text-secondary font-medium pl-2">
-      <li>
-        <strong>Upload Your File:</strong> Click the upload box or drag and drop any PNG, JPEG, or SVG file into the <strong>color extractor upload image</strong> dropzone.
+    <ol class="list-decimal list-inside space-y-3 text-sm sm:text-base text-text-secondary font-medium pl-2">
+      <li class="flex items-start space-x-3">
+        <span class="flex-shrink-0 w-6 h-6 rounded-full bg-accent-purple text-white text-xs font-bold flex items-center justify-center">1</span>
+        <div>
+          <strong>{t('seoSec3Step1Title')}</strong> {t('seoSec3Step1Desc')}
+        </div>
       </li>
-      <li>
-        <strong>Activate 200px Zoom Lens:</strong> Hover your mouse or touch cursor over the canvas mesh area. The 200px circular magnifier automatically activates, magnifying the underlying pixels.
+      <li class="flex items-start space-x-3">
+        <span class="flex-shrink-0 w-6 h-6 rounded-full bg-accent-purple text-white text-xs font-bold flex items-center justify-center">2</span>
+        <div>
+          <strong>{t('seoSec3Step2Title')}</strong> {t('seoSec3Step2Desc')}
+        </div>
       </li>
-      <li>
-        <strong>Click to Pick Color:</strong> Align the center crosshair over your desired pixel and click. The page automatically scrolls to the color swatch section.
+      <li class="flex items-start space-x-3">
+        <span class="flex-shrink-0 w-6 h-6 rounded-full bg-accent-purple text-white text-xs font-bold flex items-center justify-center">3</span>
+        <div>
+          <strong>{t('seoSec3Step3Title')}</strong> {t('seoSec3Step3Desc')}
+        </div>
       </li>
-      <li>
-        <strong>Copy or Download Color Codes:</strong> Click "Copy HEX", "Copy RGB", or "Copy HSL" to save the code to your clipboard, or click "Download Swatch PNG" for a visual reference card.
+      <li class="flex items-start space-x-3">
+        <span class="flex-shrink-0 w-6 h-6 rounded-full bg-accent-purple text-white text-xs font-bold flex items-center justify-center">4</span>
+        <div>
+          <strong>{t('seoSec3Step4Title')}</strong> {t('seoSec3Step4Desc')}
+        </div>
       </li>
     </ol>
   </section>
 
-  <!-- Section 4: Supported Image Formats (PNG, JPEG, SVG) -->
+  <!-- Section 4: Supported Image Formats -->
   <section class="space-y-3">
     <h3 class="text-xl font-bold text-text-primary flex items-center space-x-2">
       <span class="w-2 h-2 rounded-full bg-text-primary"></span>
-      <span>Supported Formats: PNG, JPEG & SVG Color Extractor</span>
+      <span>{t('seoSec4Title')}</span>
     </h3>
     <p class="text-sm sm:text-base text-text-secondary">
-      Different design workflows utilize different graphic formats. Our <strong>website color extractor</strong> supports the three most popular web image standards:
+      {t('seoSec4P1')}
     </p>
 
     <div class="space-y-3 mt-2">
       <div class="p-3 bg-surface-secondary rounded-lg border-l-4 border-text-primary text-sm">
-        <strong>PNG Color Extractor:</strong> PNG files preserve sharp edges and transparent backgrounds, making them ideal for extracting exact colors from logos, UI icons, and transparent overlays.
+        <strong>{t('seoSec4Format1Title')}</strong> {t('seoSec4Format1Desc')}
       </div>
       <div class="p-3 bg-surface-secondary rounded-lg border-l-4 border-text-secondary text-sm">
-        <strong>JPEG / Photo Color Extractor:</strong> JPEG photos contain complex lighting, gradients, and natural hues. Our 200px magnifier lens lets you sample skin tones, environmental colors, and photographic shadows effortlessly.
+        <strong>{t('seoSec4Format2Title')}</strong> {t('seoSec4Format2Desc')}
       </div>
       <div class="p-3 bg-surface-secondary rounded-lg border-l-4 border-text-muted text-sm">
-        <strong>SVG Vector Color Extractor:</strong> Scalable Vector Graphics (SVG) scale infinitely without loss of resolution. Upload SVG artwork directly to sample fill and stroke colors.
+        <strong>{t('seoSec4Format3Title')}</strong> {t('seoSec4Format3Desc')}
       </div>
     </div>
   </section>
 
-  <!-- Section 5: The Power of a Precision HEX Color Extractor -->
+  <!-- Section 5: Understanding Color Formats -->
   <section class="space-y-3">
     <h3 class="text-xl font-bold text-text-primary flex items-center space-x-2">
       <span class="w-2 h-2 rounded-full bg-text-primary"></span>
-      <span>Understanding Color Formats: HEX, RGB, and HSL</span>
+      <span>{t('seoSec5Title')}</span>
     </h3>
     <p class="text-sm sm:text-base text-text-secondary">
-      When using a <strong>hex color extractor</strong>, understanding how color values are represented helps in frontend development, digital art, and graphic design:
+      {t('seoSec5P1')}
     </p>
 
     <div class="overflow-x-auto mt-4">
       <table class="w-full text-left text-xs sm:text-sm border-collapse border border-border rounded-lg overflow-hidden">
         <thead class="bg-surface-secondary text-text-primary font-bold">
           <tr>
-            <th class="p-3 border-b border-border">Format</th>
-            <th class="p-3 border-b border-border">Example Code</th>
-            <th class="p-3 border-b border-border">Best Used For</th>
+            <th class="p-3 border-b border-border">{t('seoSec5ThFormat')}</th>
+            <th class="p-3 border-b border-border">{t('seoSec5ThExample')}</th>
+            <th class="p-3 border-b border-border">{t('seoSec5ThBestFor')}</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-border text-text-secondary">
           <tr>
             <td class="p-3 font-mono font-bold">HEX</td>
             <td class="p-3 font-mono">#7928CA</td>
-            <td class="p-3">HTML/CSS web styling, Figma, Adobe Suite</td>
+            <td class="p-3">{t('seoSec5HexDesc')}</td>
           </tr>
           <tr>
             <td class="p-3 font-mono font-bold">RGB</td>
             <td class="p-3 font-mono">rgb(121, 40, 202)</td>
-            <td class="p-3">Digital displays, Canvas API, UI animations</td>
+            <td class="p-3">{t('seoSec5RgbDesc')}</td>
           </tr>
           <tr>
             <td class="p-3 font-mono font-bold">HSL</td>
             <td class="p-3 font-mono">hsl(270, 67%, 47%)</td>
-            <td class="p-3">CSS color adjustments, theme generation, accessibility tuning</td>
+            <td class="p-3">{t('seoSec5HslDesc')}</td>
           </tr>
         </tbody>
       </table>
     </div>
   </section>
 
-  <!-- Section 6: Conclusion -->
+  <!-- Section 6: Use Cases - Who Uses a Color Extractor & Color Finder? -->
+  <section class="space-y-3">
+    <h3 class="text-xl font-bold text-text-primary flex items-center space-x-2">
+      <span class="w-2 h-2 rounded-full bg-text-primary"></span>
+      <span>{t('seoSec6Title')}</span>
+    </h3>
+    <p class="text-sm sm:text-base text-text-secondary">
+      {t('seoSec6P1')}
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      <div class="card bg-surface-secondary p-4 rounded-xl border border-border-subtle">
+        <h4 class="font-bold text-text-primary text-sm mb-2">{t('seoSec6Case1Title')}</h4>
+        <p class="text-xs text-text-secondary">{t('seoSec6Case1Desc')}</p>
+      </div>
+      <div class="card bg-surface-secondary p-4 rounded-xl border border-border-subtle">
+        <h4 class="font-bold text-text-primary text-sm mb-2">{t('seoSec6Case2Title')}</h4>
+        <p class="text-xs text-text-secondary">{t('seoSec6Case2Desc')}</p>
+      </div>
+      <div class="card bg-surface-secondary p-4 rounded-xl border border-border-subtle">
+        <h4 class="font-bold text-text-primary text-sm mb-2">{t('seoSec6Case3Title')}</h4>
+        <p class="text-xs text-text-secondary">{t('seoSec6Case3Desc')}</p>
+      </div>
+      <div class="card bg-surface-secondary p-4 rounded-xl border border-border-subtle">
+        <h4 class="font-bold text-text-primary text-sm mb-2">{t('seoSec6Case4Title')}</h4>
+        <p class="text-xs text-text-secondary">{t('seoSec6Case4Desc')}</p>
+      </div>
+      <div class="card bg-surface-secondary p-4 rounded-xl border border-border-subtle">
+        <h4 class="font-bold text-text-primary text-sm mb-2">{t('seoSec6Case5Title')}</h4>
+        <p class="text-xs text-text-secondary">{t('seoSec6Case5Desc')}</p>
+      </div>
+      <div class="card bg-surface-secondary p-4 rounded-xl border border-border-subtle">
+        <h4 class="font-bold text-text-primary text-sm mb-2">{t('seoSec6Case6Title')}</h4>
+        <p class="text-xs text-text-secondary">{t('seoSec6Case6Desc')}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7: Conclusion -->
   <footer class="pt-4 border-t border-border-subtle text-xs sm:text-sm text-text-muted space-y-2">
     <p>
-      In summary, our free <strong>color extractor</strong> combines a live browser screen dropper with an advanced <strong>png color extractor</strong> and 200px zoom lens to deliver the fastest, most reliable color identification tool on the web. Try uploading an image above or click the dropper lens to sample your first color now!
+      {t('seoSec7Summary')}
     </p>
   </footer>
 </article>

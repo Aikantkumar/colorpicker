@@ -6,6 +6,7 @@ import ImageUploader from '../components/ImageUploader.astro';
 import MagnifierCanvas from '../components/MagnifierCanvas.astro';
 import ColorSwatch from '../components/ColorSwatch.astro';
 import SeoContent from '../components/SeoContent.astro';
+import Footer from '../components/Footer.astro';
 import { LANGUAGES, DEFAULT_LANG, type SupportedLang } from '../i18n/ui';
 import { useTranslations } from '../i18n/utils';
 
@@ -23,9 +24,9 @@ const { lang: langParam } = Astro.params;
 const lang = (langParam as SupportedLang) || DEFAULT_LANG;
 const t = useTranslations(lang);
 
-// Targeted SEO Title & Meta Description focusing on Main Keyword: color extractor
-const seoTitle = 'Color Extractor | Free Online Image & Website Color Extractor';
-const seoDescription = 'Free online color extractor. Extract exact HEX, RGB, and HSL color codes from image uploads (PNG, JPEG, SVG) or screen pixels with 200px zoom lens magnifier.';
+// Targeted SEO Title & Meta Description for BOTH Color Extractor & Color Finder
+const seoTitle = t('homeSeoTitle');
+const seoDescription = t('homeSeoDescription');
 
 const faqLinkPath = lang === DEFAULT_LANG ? '/faq/' : `/${lang}/faq/`;
 ---
@@ -36,7 +37,7 @@ const faqLinkPath = lang === DEFAULT_LANG ? '/faq/' : `/${lang}/faq/`;
     <!-- Premium Header Component -->
     <Header
       currentLang={lang}
-      title="Color Extractor"
+      title={t('headerTitle')}
       subtitle={t('headerSubtitle')}
     />
 
@@ -49,10 +50,7 @@ const faqLinkPath = lang === DEFAULT_LANG ? '/faq/' : `/${lang}/faq/`;
           <h2 class="text-lg sm:text-xl font-bold text-text-primary tracking-tight mb-3">
             {t('dropperHeading')}
           </h2>
-          <DropperButton
-            dropperHelper={t('dropperHelper')}
-            dropperError={t('dropperError')}
-          />
+          <DropperButton currentLang={lang} />
         </div>
 
         <!-- Vertical Divider (Desktop) / Horizontal Divider (Mobile) -->
@@ -64,10 +62,7 @@ const faqLinkPath = lang === DEFAULT_LANG ? '/faq/' : `/${lang}/faq/`;
           <h2 class="text-lg sm:text-xl font-bold text-text-primary tracking-tight mb-3">
             {t('uploadHeading')}
           </h2>
-          <ImageUploader
-            uploadHelper={t('uploadHelper')}
-            uploadTypes={t('uploadTypes')}
-          />
+          <ImageUploader currentLang={lang} />
         </div>
 
       </div>
@@ -75,70 +70,35 @@ const faqLinkPath = lang === DEFAULT_LANG ? '/faq/' : `/${lang}/faq/`;
 
     <!-- Results Swatch Section (Right below features on first impression) -->
     <section class="w-full">
-      <ColorSwatch
-        extractedTitle={t('extractedTitle')}
-        activeColor={t('activeColor')}
-        copyHex={t('copyHex')}
-        copyRgb={t('copyRgb')}
-        copyHsl={t('copyHsl')}
-        copied={t('copied')}
-        downloadPng={t('downloadPng')}
-      />
+      <ColorSwatch currentLang={lang} />
     </section>
 
     <!-- Mesh & 200px Zoom Lens Canvas Section -->
     <section class="w-full mt-4">
-      <MagnifierCanvas
-        meshHeading={t('meshHeading')}
-        meshSubheading={t('meshSubheading')}
-        defaultMeshStatus={t('defaultMeshStatus')}
-        uploadedStatus={t('uploadedStatus')}
-        lensLabel={t('lensLabel')}
-        zoomLabel={t('zoomLabel')}
-      />
+      <MagnifierCanvas currentLang={lang} />
     </section>
 
     <!-- 800 - 1200 Words SEO Guide Content (After main components) -->
-    <SeoContent />
+    <SeoContent currentLang={lang} />
 
     <!-- FAQ Teaser Link Section -->
     <section class="w-full max-w-4xl bg-surface-tertiary text-text-primary rounded-2xl p-6 sm:p-8 text-center my-6 shadow-xl flex flex-col items-center border border-border">
-      <h3 class="text-2xl font-extrabold text-text-primary">Have Questions About Color Extraction?</h3>
+      <h3 class="text-2xl font-extrabold text-text-primary">{t('faqTeaserTitle')}</h3>
       <p class="text-xs sm:text-sm text-text-muted mt-2 max-w-xl">
-        Check out our comprehensive FAQ page answering all questions about extracting color from pictures, free color pickers, font finders, and color codes.
+        {t('faqTeaserSubtitle')}
       </p>
       <a
         href={faqLinkPath}
         class="mt-4 inline-flex items-center space-x-2 btn-primary text-text-on-accent hover:bg-surface-tertiary px-6 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md"
       >
-        <span>View All 13 FAQ Questions</span>
+        <span>{t('faqTeaserBtn')}</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
         </svg>
       </a>
     </section>
 
-    <!-- Footer with Language & FAQ Links -->
-    <footer class="mt-16 pt-8 border-t border-border w-full text-center text-xs text-text-muted font-medium flex flex-col sm:flex-row items-center justify-between gap-4">
-      <p>© {new Date().getFullYear()} {t('footerText')}</p>
-      
-      <div class="flex flex-wrap items-center justify-center gap-3 text-text-muted">
-        <a href={faqLinkPath} class="font-bold text-text-primary hover:underline">FAQ</a>
-        <span>•</span>
-        {Object.entries(LANGUAGES).map(([code, info]) => (
-          <a
-            href={code === 'en' ? '/' : `/${code}/`}
-            class={`px-1.5 py-0.5 rounded transition-colors ${
-              code === lang
-                ? 'font-bold text-text-primary underline'
-                : 'hover:text-text-primary'
-            }`}
-          >
-            {info.name}
-          </a>
-        ))}
-      </div>
-    </footer>
-
+    <!-- Footer with Links to Contact, Privacy, Terms, FAQ, Languages -->
+    <Footer currentLang={lang} />
   </main>
 </Layout>

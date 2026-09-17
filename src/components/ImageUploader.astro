@@ -1,67 +1,221 @@
 ---
+import type { SupportedLang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
 interface Props {
-  uploadHelper?: string;
-  uploadTypes?: string;
+  currentLang?: SupportedLang;
 }
 
-const {
-  uploadHelper = 'Click to upload or drag & drop image',
-  uploadTypes = 'Supports PNG, JPEG, SVG'
-} = Astro.props;
+const { currentLang = 'en' } = Astro.props;
+const t = useTranslations(currentLang);
 ---
 <div class="w-full flex flex-col items-center justify-center py-2">
   <div
     id="drop-zone"
-    class="w-full relative flex flex-col items-center justify-center p-6 border-2 border-dashed border-border rounded-xl bg-surface hover:bg-surface-secondary hover:border-border-strong transition-all duration-200 cursor-pointer group"
+    class="w-full relative flex flex-col items-center justify-center p-6 border-2 border-dashed border-border rounded-xl bg-surface hover:bg-surface-secondary hover:border-border-strong transition-all duration-300 cursor-pointer group touch-manipulation focus-within:ring-4 focus-within:ring-accent-purple/30 focus-within:ring-offset-2 focus-within:ring-offset-surface"
+    role="button"
+    tabindex="0"
+    aria-label={t('uploadAriaLabel')}
+    aria-describedby="upload-helper-text"
+    data-error-invalid={t('uploadErrorInvalid')}
   >
     <input
       type="file"
       id="image-file-input"
       accept="image/png, image/jpeg, image/jpg, image/svg+xml"
       class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-      aria-label="Upload Image (PNG, JPEG, SVG)"
+      aria-label={t('uploadInputAriaLabel')}
+      aria-hidden="true"
     />
 
-    <div class="w-12 h-12 rounded-full bg-surface-tertiary flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-accent-purple group-hover:text-white transition-all duration-200">
+    <!-- Upload icon with animated states -->
+    <div class="relative w-14 h-14 rounded-full bg-gradient-to-br from-surface-tertiary to-surface-secondary flex items-center justify-center mb-4 group-hover:scale-110 group-focus-within:scale-110 group-data-[dragover=true]:scale-110 group-data-[dragover=true]:bg-accent-purple/20 transition-all duration-300">
+      <!-- Background pulse when dragging -->
+      <span class="absolute inset-0 rounded-full bg-accent-purple/20 blur-lg opacity-0 group-data-[dragover=true]:opacity-100 transition-opacity duration-300 animate-pulse"></span>
+      
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="w-6 h-6 text-icon group-hover:text-white transition-colors"
+        class="w-7 h-7 text-icon group-hover:text-accent-purple group-focus-within:text-accent-purple group-data-[dragover=true]:text-white transition-all duration-300 z-10"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
-        stroke-width="2"
+        stroke-width="1.5"
+        aria-hidden="true"
       >
         <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M16 10l-4-4m0 0l-4 4m4-4v12" />
       </svg>
+      
+      <!-- Upload progress ring (hidden by default) -->
+      <svg class="absolute inset-0 w-full h-full -rotate-90 transform" aria-hidden="true">
+        <circle 
+          id="upload-progress-ring" 
+          class="stroke-accent-purple opacity-0 transition-opacity duration-300" 
+          cx="28" 
+          cy="28" 
+          r="24" 
+          fill="none" 
+          stroke-width="3" 
+          stroke-dasharray="150.8" 
+          stroke-dashoffset="150.8"
+          stroke-linecap="round"
+        />
+      </svg>
     </div>
 
-    <p class="text-sm font-semibold text-text-primary text-center">
-      {uploadHelper}
+    <!-- Drag overlay -->
+    <div 
+      id="drag-overlay" 
+      class="absolute inset-0 rounded-xl bg-gradient-to-br from-accent-purple/10 via-accent-cyan/10 to-accent-pink/10 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-20"
+      aria-hidden="true"
+    >
+      <div class="text-center p-4 transform scale-95 group-data-[dragover=true]:scale-100 transition-transform duration-300">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-10 h-10 mx-auto text-accent-purple mb-2 animate-bounce"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M16 10l-4-4m0 0l-4 4m4-4v12" />
+        </svg>
+        <p class="text-sm font-semibold text-text-primary">{t('uploadDropHere')}</p>
+        <p class="text-xs text-text-muted mt-1">{t('uploadRelease')}</p>
+      </div>
+    </div>
+
+    <p id="upload-helper-text" class="text-sm font-semibold text-text-primary text-center transition-colors duration-200 group-data-[dragover=true]:text-accent-purple">
+      {t('uploadHelper')}
     </p>
-    <p class="text-xs text-text-muted mt-1 font-medium">
-      {uploadTypes}
+    <p class="text-xs text-text-muted mt-1 font-medium transition-opacity duration-200 group-data-[dragover=true]:opacity-0">
+      {t('uploadTypes')}
     </p>
+
+    <!-- File preview (shown after selection) -->
+    <div id="file-preview" class="hidden w-full mt-4" role="status" aria-live="polite">
+      <div class="flex items-center gap-3 p-3 bg-surface-tertiary rounded-lg border border-border/50 animate-in slide-in-from-top-2 fade-in duration-300">
+        <div class="relative w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-surface-secondary">
+          <img 
+            id="preview-image" 
+            src="" 
+            alt="" 
+            class="w-full h-full object-cover" 
+            aria-hidden="true"
+          />
+          <svg 
+            id="preview-svg-icon" 
+            class="hidden w-full h-full text-icon flex items-center justify-center" 
+            fill="currentColor" 
+            viewBox="0 0 24 24" 
+            aria-hidden="true"
+          >
+            <path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z"></path>
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <path d="M9 22h6"></path>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p id="preview-filename" class="text-sm font-medium text-text-primary truncate"></p>
+          <p id="preview-filesize" class="text-xs text-text-muted"></p>
+        </div>
+        <button
+          id="remove-file-btn"
+          type="button"
+          class="p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-border transition-colors flex-shrink-0"
+          aria-label={t('uploadRemoveFile')}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
   const fileInput = document.getElementById('image-file-input') as HTMLInputElement | null;
   const dropZone = document.getElementById('drop-zone');
+  const dragOverlay = document.getElementById('drag-overlay');
+  const filePreview = document.getElementById('file-preview');
+  const previewImage = document.getElementById('preview-image') as HTMLImageElement | null;
+  const previewSvgIcon = document.getElementById('preview-svg-icon');
+  const previewFilename = document.getElementById('preview-filename');
+  const previewFilesize = document.getElementById('preview-filesize');
+  const removeFileBtn = document.getElementById('remove-file-btn');
+  const progressRing = document.getElementById('upload-progress-ring') as SVGCircleElement | null;
+
+  function formatFileSize(bytes: number): string {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  }
+
+  function showPreview(file: File, imageUrl: string) {
+    if (!filePreview || !previewFilename || !previewFilesize) return;
+    
+    previewFilename.textContent = file.name;
+    previewFilesize.textContent = formatFileSize(file.size);
+    
+    // Check if it's an SVG
+    const isSvg = file.type === 'image/svg+xml' || file.name.toLowerCase().endsWith('.svg');
+    
+    if (previewImage && previewSvgIcon) {
+      if (isSvg) {
+        previewImage.classList.add('hidden');
+        previewSvgIcon.classList.remove('hidden');
+      } else {
+        previewImage.src = imageUrl;
+        previewImage.classList.remove('hidden');
+        previewSvgIcon.classList.add('hidden');
+      }
+    }
+    
+    filePreview.classList.remove('hidden');
+    dropZone?.classList.add('data-[has-file=true]');
+  }
+
+  function hidePreview() {
+    if (filePreview) filePreview.classList.add('hidden');
+    dropZone?.classList.remove('data-[has-file=true]');
+    if (previewImage) previewImage.src = '';
+  }
 
   function handleFileSelect(file: File) {
     if (!file) return;
 
     // Validate type
     const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'];
-    if (!validTypes.includes(file.type) && !file.name.endsWith('.svg')) {
-      alert('Please upload a valid image file (PNG, JPEG, or SVG).');
+    if (!validTypes.includes(file.type) && !file.name.toLowerCase().endsWith('.svg')) {
+      const errorMsg = dropZone?.getAttribute('data-error-invalid') || 'Please upload a valid image file (PNG, JPEG, or SVG).';
+      alert(errorMsg);
       return;
+    }
+
+    // Show progress ring
+    if (progressRing) {
+      progressRing.classList.remove('opacity-0');
+      progressRing.style.strokeDashoffset = '150.8';
     }
 
     const reader = new FileReader();
     reader.onload = (e) => {
       const imageUrl = e.target?.result as string;
       if (!imageUrl) return;
+
+      // Animate progress ring completion
+      if (progressRing) {
+        progressRing.style.transition = 'stroke-dashoffset 0.5s ease-out';
+        progressRing.style.strokeDashoffset = '0';
+        
+        setTimeout(() => {
+          progressRing.classList.add('opacity-0');
+          progressRing.style.transition = 'opacity 0.3s ease-out';
+        }, 500);
+      }
+
+      showPreview(file, imageUrl);
 
       // Dispatch event to update canvas with image
       window.dispatchEvent(new CustomEvent('imageuploaded', {
@@ -77,7 +231,24 @@ const {
       }, 100);
     };
 
+    // Simulate progress for better UX
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+      progress += 15;
+      if (progressRing && progress < 90) {
+        const offset = 150.8 * (1 - progress / 100);
+        progressRing.style.strokeDashoffset = offset.toString();
+      } else {
+        clearInterval(progressInterval);
+      }
+    }, 50);
+
     reader.readAsDataURL(file);
+  }
+
+  function handleRemoveFile() {
+    if (fileInput) fileInput.value = '';
+    hidePreview();
   }
 
   if (fileInput) {
@@ -89,27 +260,84 @@ const {
     });
   }
 
+  if (removeFileBtn) {
+    removeFileBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      handleRemoveFile();
+    });
+  }
+
   if (dropZone) {
-    ['dragenter', 'dragover'].forEach(eventName => {
-      dropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropZone.classList.add('border-border-strong', 'bg-surface-secondary');
-      }, false);
-    });
+    const handleDragEnter = (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.add('border-border-strong', 'bg-surface-secondary', 'data-[dragover=true]');
+      dropZone.dataset.dragover = 'true';
+    };
 
-    ['dragleave', 'drop'].forEach(eventName => {
-      dropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropZone.classList.remove('border-border-strong', 'bg-surface-secondary');
-      }, false);
-    });
+    const handleDragOver = (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.add('border-border-strong', 'bg-surface-secondary', 'data-[dragover=true]');
+      dropZone.dataset.dragover = 'true';
+    };
 
-    dropZone.addEventListener('drop', (e: DragEvent) => {
+    const handleDragLeave = (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      // Only remove if actually leaving the drop zone (not entering a child)
+      if (!dropZone.contains(e.relatedTarget as Node)) {
+        dropZone.classList.remove('border-border-strong', 'bg-surface-secondary', 'data-[dragover=true]');
+        dropZone.dataset.dragover = 'false';
+      }
+    };
+
+    const handleDrop = (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.remove('border-border-strong', 'bg-surface-secondary', 'data-[dragover=true]');
+      dropZone.dataset.dragover = 'false';
+      
       const dt = e.dataTransfer;
       if (dt && dt.files && dt.files[0]) {
         handleFileSelect(dt.files[0]);
+      }
+    };
+
+    ['dragenter'].forEach(eventName => {
+      dropZone.addEventListener(eventName, handleDragEnter, false);
+    });
+
+    ['dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, handleDragOver, false);
+    });
+
+    ['dragleave'].forEach(eventName => {
+      dropZone.addEventListener(eventName, handleDragLeave, false);
+    });
+
+    ['drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, handleDrop, false);
+    });
+
+    // Keyboard support
+    dropZone.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        fileInput?.click();
+      }
+    });
+
+    // Click to open file dialog
+    dropZone.addEventListener('click', (e) => {
+      // Don't trigger if clicking on the preview remove button or file input
+      if (e.target === dropZone || dropZone.contains(e.target as Node)) {
+        if ((e.target as HTMLElement).id !== 'remove-file-btn' && 
+            !(e.target as HTMLElement).closest('#remove-file-btn') &&
+            (e.target as HTMLElement).tagName !== 'INPUT') {
+          fileInput?.click();
+        }
       }
     });
   }

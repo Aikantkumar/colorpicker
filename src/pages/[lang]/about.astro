@@ -1,0 +1,91 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { LANGUAGES, DEFAULT_LANG, type SupportedLang } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return Object.keys(LANGUAGES).map((code) => ({
+    params: { lang: code },
+  }));
+}
+
+const { lang: langParam } = Astro.params;
+const lang = (langParam as SupportedLang) || DEFAULT_LANG;
+const t = useTranslations(lang);
+
+const pageTitle = t('aboutTitle');
+const pageDescription = t('aboutSubtitle');
+---
+
+<Layout title={pageTitle} description={pageDescription} lang={lang}>
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 flex flex-col items-center">
+    <!-- Header -->
+    <Header
+      currentLang={lang}
+      title={t('aboutTitle')}
+      subtitle={t('aboutSubtitle')}
+    />
+
+    <!-- About Content -->
+    <article class="w-full max-w-3xl prose prose-neutral dark:prose-invert mt-8 space-y-10">
+      <section>
+        <h2 class="text-2xl font-bold text-text-primary mb-4">{t('aboutMission')}</h2>
+        <p class="text-text-secondary leading-relaxed">{t('aboutMissionDesc')}</p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-text-primary mb-4">{t('aboutStory')}</h2>
+        <p class="text-text-secondary leading-relaxed">{t('aboutStoryDesc')}</p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-text-primary mb-4">{t('aboutFeatures')}</h2>
+        <ul class="list-disc list-inside space-y-3 text-text-secondary leading-relaxed">
+          <li>{t('aboutFeature1')}</li>
+          <li>{t('aboutFeature2')}</li>
+          <li>{t('aboutFeature3')}</li>
+          <li>{t('aboutFeature4')}</li>
+          <li>{t('aboutFeature5')}</li>
+          <li>{t('aboutFeature6')}</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-text-primary mb-4">{t('aboutTeam')}</h2>
+        <p class="text-text-secondary leading-relaxed">{t('aboutTeamDesc')}</p>
+      </section>
+
+      <section class="text-center pt-4 border-t border-border">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">{t('aboutContact')}</h2>
+        <p class="text-text-secondary leading-relaxed mb-6">{t('aboutContactDesc')}</p>
+        <a
+          href={lang === DEFAULT_LANG ? '/contact/' : `/${lang}/contact/`}
+          class="inline-flex items-center space-x-2 btn-primary text-text-on-accent hover:bg-surface-tertiary px-6 py-3 rounded-xl text-sm font-semibold shadow-md hover:shadow-lg transition-all"
+        >
+          <span>{t('navContact')}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </section>
+    </article>
+
+    <!-- Back to Main Tool CTA -->
+    <div class="mt-10 text-center">
+      <a
+        href={lang === DEFAULT_LANG ? '/' : `/${lang}/`}
+        class="inline-flex items-center space-x-2 btn-primary text-text-on-accent hover:bg-surface-tertiary px-6 py-3 rounded-xl text-sm font-semibold shadow-md hover:shadow-lg transition-all"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        <span>{t('backToTool')}</span>
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <Footer currentLang={lang} />
+  </main>
+</Layout>

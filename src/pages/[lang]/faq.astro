@@ -1,8 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
 import FaqSection from '../../components/FaqSection.astro';
-import { FAQ_ITEMS } from '../../data/faqData';
+import { getFaqItems } from '../../data/faqData';
 import { LANGUAGES, type SupportedLang } from '../../i18n/ui';
 import { useTranslations } from '../../i18n/utils';
 
@@ -20,10 +21,11 @@ const pageTitle = `${t('headerTitle')} FAQ | ${t('siteTitle')}`;
 const pageDescription = `${t('siteDescription')} FAQ`;
 
 // Generate FAQPage JSON-LD Schema
+const faqItems = getFaqItems(lang);
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": FAQ_ITEMS.map((item) => ({
+  "mainEntity": faqItems.map((item) => ({
     "@type": "Question",
     "name": item.question,
     "acceptedAnswer": {
@@ -49,7 +51,7 @@ const homePath = `/${lang}/`;
     />
 
     <!-- FAQ Accordion Section -->
-    <FaqSection />
+    <FaqSection currentLang={lang} />
 
     <!-- Back to Main Tool CTA -->
     <div class="mt-8 text-center">
@@ -60,18 +62,11 @@ const homePath = `/${lang}/`;
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
-        <span>{t('headerTitle')} Tool</span>
+        <span>{t('backToTool')}</span>
       </a>
     </div>
 
-    <!-- Minimalist Footer -->
-    <footer class="mt-16 pt-8 border-t border-neutral-200/80 w-full text-center text-xs text-neutral-400 font-medium flex flex-col sm:flex-row items-center justify-between gap-4">
-      <p>© {new Date().getFullYear()} {t('footerText')}</p>
-      <div class="flex items-center space-x-4">
-        <a href={homePath} class="hover:text-neutral-900">{t('headerTitle')}</a>
-        <span>•</span>
-        <a href={`/${lang}/faq/`} class="hover:text-neutral-900 font-semibold text-neutral-700">FAQ</a>
-      </div>
-    </footer>
+    <!-- Footer -->
+    <Footer currentLang={lang} />
   </main>
 </Layout>

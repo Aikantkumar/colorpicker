@@ -1,30 +1,22 @@
 ---
+import type { SupportedLang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
 interface Props {
-  meshHeading?: string;
-  meshSubheading?: string;
-  defaultMeshStatus?: string;
-  uploadedStatus?: string;
-  lensLabel?: string;
-  zoomLabel?: string;
+  currentLang?: SupportedLang;
 }
 
-const {
-  meshHeading = 'Pick the color from image using 200px zoom lens',
-  meshSubheading = 'Hover over the image to activate the 200px magnifier lens • Click anywhere to select color',
-  defaultMeshStatus = 'Default Palette Mesh Loaded',
-  uploadedStatus = 'Uploaded Image',
-  lensLabel = 'Lens',
-  zoomLabel = 'Zoom'
-} = Astro.props;
+const { currentLang = 'en' } = Astro.props;
+const t = useTranslations(currentLang);
 ---
 <div class="w-full flex flex-col items-center">
   <!-- Heading requested by user with bold, bigger size & cursive text -->
   <div id="mesh-section-top" class="pt-6 pb-3 text-center scroll-mt-6">
     <h2 class="font-cursive text-3xl sm:text-4xl md:text-5xl font-bold text-text-primary tracking-wide drop-shadow-sm select-none">
-      {meshHeading}
+      {t('meshHeading')}
     </h2>
     <p class="text-xs sm:text-sm text-text-muted font-medium mt-1">
-      {meshSubheading}
+      {t('meshSubheading')}
     </p>
   </div>
 
@@ -34,19 +26,19 @@ const {
     <div class="bg-surface-secondary/90 backdrop-blur-sm border-b border-border px-4 py-2 flex items-center justify-between text-xs text-text-secondary font-mono">
       <div class="flex items-center space-x-2">
         <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span id="canvas-status-text" data-default-text={defaultMeshStatus} data-uploaded-text={uploadedStatus}>
-          {defaultMeshStatus}
+        <span id="canvas-status-text" data-default-text={t('defaultMeshStatus')} data-uploaded-text={t('uploadedStatus')}>
+          {t('defaultMeshStatus')}
         </span>
       </div>
       <div class="hidden sm:flex items-center space-x-4">
-        <span>{lensLabel}: <strong>200px</strong></span>
-        <span>{zoomLabel}: <strong>2.5x</strong></span>
+        <span>{t('lensLabel')}: <strong>200px</strong></span>
+        <span>{t('zoomLabel')}: <strong>2.5x</strong></span>
       </div>
     </div>
 
     <!-- Canvas wrapper -->
     <div class="relative w-full flex justify-center items-center bg-surface-tertiary/50 min-h-[320px] cursor-crosshair overflow-hidden" id="canvas-wrapper">
-      <canvas id="color-canvas" class="max-w-full h-auto block select-none"></canvas>
+      <canvas id="color-canvas" data-canvas-title={t('meshCanvasTitle')} data-canvas-subtitle={t('meshCanvasSubtitle')} class="max-w-full h-auto block select-none"></canvas>
       
       <!-- Live Lens Info Tooltip -->
       <div id="lens-tooltip" class="pointer-events-none fixed z-50 hidden transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
@@ -125,13 +117,16 @@ const {
         oCtx.stroke();
       }
 
+      const titleText = canvas?.getAttribute('data-canvas-title') || 'Interactive 200px Magnifier Color Mesh';
+      const subtitleText = canvas?.getAttribute('data-canvas-subtitle') || 'Hover to magnify pixels • Click to extract exact HEX/RGB';
+
       oCtx.fillStyle = 'rgba(255,255,255,0.95)';
       oCtx.font = 'bold 36px sans-serif';
       oCtx.textAlign = 'center';
-      oCtx.fillText('Interactive 200px Magnifier Color Mesh', 600, 260);
+      oCtx.fillText(titleText, 600, 260);
       oCtx.font = '22px sans-serif';
       oCtx.fillStyle = 'rgba(255,255,255,0.8)';
-      oCtx.fillText('Hover to magnify pixels • Click to extract exact HEX/RGB', 600, 310);
+      oCtx.fillText(subtitleText, 600, 310);
 
       const img = new Image();
       img.onload = () => {
@@ -247,7 +242,7 @@ const {
         loadedImage = img;
         renderCanvas();
         if (statusText) {
-          const prefix = statusText.getAttribute('data-uploaded-text') || 'Uploaded Image';
+          const prefix = statusText.getAttribute('data-uploaded-text') || statusText.getAttribute('data-default-text') || 'Uploaded Image';
           statusText.textContent = `${prefix}: ${fileName || 'Custom Image'}`;
         }
       };

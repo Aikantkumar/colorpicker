@@ -1,0 +1,117 @@
+---
+import { LANGUAGES, DEFAULT_LANG, type SupportedLang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+import logo from '../assets/logo.svg';
+
+interface Props {
+  currentLang?: SupportedLang;
+}
+
+const { currentLang = DEFAULT_LANG } = Astro.props;
+const t = useTranslations(currentLang);
+
+const isDefault = currentLang === DEFAULT_LANG;
+const homePath = isDefault ? '/' : `/${currentLang}/`;
+const aboutPath = isDefault ? '/about/' : `/${currentLang}/about/`;
+const contactPath = isDefault ? '/contact/' : `/${currentLang}/contact/`;
+const faqPath = isDefault ? '/faq/' : `/${currentLang}/faq/`;
+const privacyPath = isDefault ? '/privacy/' : `/${currentLang}/privacy/`;
+const termsPath = isDefault ? '/terms/' : `/${currentLang}/terms/`;
+
+const navLinks = [
+  { label: t('navHome') || 'Home', path: homePath, icon: 'home' },
+  { label: t('navAbout') || 'About Us', path: aboutPath, icon: 'about' },
+  { label: t('navContact') || 'Contact Us', path: contactPath, icon: 'contact' },
+  { label: t('navFaq') || 'FAQ', path: faqPath, icon: 'faq' },
+  { label: t('navPrivacy') || 'Privacy Policy', path: privacyPath, icon: 'privacy' },
+  { label: t('navTerms') || 'Terms & Conditions', path: termsPath, icon: 'terms' },
+];
+---
+
+<footer class="mt-16 pt-10 pb-8 border-t border-border w-full bg-surface/50 backdrop-blur-sm rounded-t-3xl transition-colors">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center gap-8">
+    
+    <!-- Brand & Mission Summary -->
+    <div class="flex flex-col sm:flex-row items-center justify-between w-full gap-4 pb-6 border-b border-border-subtle">
+      <a href={homePath} class="flex items-center space-x-3 text-text-primary font-bold text-base hover:opacity-85 transition-opacity">
+        <div class="relative w-8 h-8 rounded-xl bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-600 flex items-center justify-center shadow-md">
+          <img src={logo.src} alt="Color Finder Logo" class="w-4 h-4 text-white" />
+        </div>
+        <div class="flex flex-col text-left">
+          <span class="leading-tight font-extrabold font-mono text-text-primary">Pick Color Online</span>
+          <span class="text-[10px] font-medium text-text-muted">{t('footerLogoSubtitle')}</span>
+        </div>
+      </a>
+      <p class="text-xs text-text-muted text-center sm:text-right max-w-md">
+        {t('footerMission')}
+      </p>
+    </div>
+
+    <!-- Quick Navigation Link Buttons -->
+    <div class="w-full flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+      {navLinks.map((link) => (
+        <a
+          href={link.path}
+          class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-text-secondary hover:text-text-primary bg-surface-secondary hover:bg-surface-tertiary border border-border-subtle hover:border-border transition-all shadow-2xs hover:shadow-xs"
+        >
+          {link.icon === 'home' && (
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+          )}
+          {link.icon === 'about' && (
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          )}
+          {link.icon === 'contact' && (
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          )}
+          {link.icon === 'faq' && (
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          )}
+          {link.icon === 'privacy' && (
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          )}
+          {link.icon === 'terms' && (
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          )}
+          <span>{link.label}</span>
+        </a>
+      ))}
+    </div>
+
+    <!-- Language Selector Pills -->
+    <div class="flex flex-wrap items-center justify-center gap-1.5 pt-2">
+      <span class="text-xs text-text-muted font-medium mr-1">{t('languagesLabel')}</span>
+      {Object.entries(LANGUAGES).map(([code, info]) => (
+        <a
+          href={code === DEFAULT_LANG ? '/' : `/${code}/`}
+          class={`inline-flex items-center space-x-1 px-2 py-1 rounded-md text-xs font-medium transition-all ${
+            code === currentLang
+              ? 'bg-primary/10 text-primary font-bold border border-primary/20'
+              : 'text-text-muted hover:text-text-primary hover:bg-surface-secondary'
+          }`}
+          title={info.name}
+        >
+          <span>{info.flag}</span>
+          <span>{info.name}</span>
+        </a>
+      ))}
+    </div>
+
+    <!-- Copyright Footer Line -->
+    <div class="pt-4 border-t border-border-subtle w-full text-center text-xs text-text-muted font-medium">
+      <p>© {new Date().getFullYear()} {t('footerText')} {t('allRightsReserved')}</p>
+    </div>
+
+  </div>
+</footer>

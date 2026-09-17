@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { LANGUAGES, DEFAULT_LANG, type SupportedLang, UI_TRANSLATIONS } from '../i18n/ui';
+import { useTranslations, getLangFromUrl } from '../i18n/utils';
+
+const url = new URL(Astro.request.url);
+const lang = getLangFromUrl(url);
+const t = useTranslations(lang);
+
+const pageTitle = t('error404Title');
+const pageDescription = t('error404Desc');
+---
+
+<Layout title={pageTitle} description={pageDescription} lang={lang}>
+  <main class="min-h-[70vh] flex items-center justify-center px-4">
+    <div class="text-center max-w-md">
+      <div class="mb-8">
+        <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/10 mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+          </svg>
+        </div>
+        <h1 class="text-6xl font-bold text-text-primary mb-4">404</h1>
+        <h2 class="text-2xl font-semibold text-text-primary mb-4">{t('error404Title')}</h2>
+        <p class="text-text-secondary leading-relaxed mb-8">{t('error404Desc')}</p>
+      </div>
+
+      <div class="space-y-4">
+<a
+          href={lang === DEFAULT_LANG ? '/' : `/${lang}/`}
+          class="inline-flex items-center space-x-2 btn-secondary text-text-primary hover:bg-surface-tertiary px-6 py-3 rounded-xl text-sm font-semibold shadow-md hover:shadow-lg transition-all"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span>{t('backToTool')}</span>
+        </a>
+
+        <div class="flex items-center justify-center gap-4 text-text-muted text-sm">
+          <a href={lang === DEFAULT_LANG ? '/about/' : `/${lang}/about/`} class="hover:underline">{t('navAbout')}</a>
+          <span>•</span>
+          <a href={lang === DEFAULT_LANG ? '/contact/' : `/${lang}/contact/`} class="hover:underline">{t('navContact')}</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="fixed bottom-0 left-0 right-0 py-4 border-t border-border bg-surface">
+    <div class="max-w-5xl mx-auto px-4 text-center text-xs text-text-muted font-medium">
+      <p>© {new Date().getFullYear()} {t('footerText')}</p>
+    </div>
+  </footer>
+</Layout>
+
+<script is:inline>
+  document.title = `${t('error404Title')} - 404`;
+</script>

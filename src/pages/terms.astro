@@ -1,0 +1,13 @@
+---
+import { DEFAULT_LANG } from '../i18n/ui';
+import { getLanguagePath } from '../i18n/utils';
+
+const lang = DEFAULT_LANG;
+const redirectPath = getLanguagePath(lang) + 'terms/';
+---
+
+<script is:inline>
+  window.location.href = "/en/terms/";
+</script>
+
+<meta http-equiv="refresh" content="0; url=/en/terms/" />

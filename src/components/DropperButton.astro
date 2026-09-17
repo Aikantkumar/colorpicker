@@ -1,63 +1,90 @@
 ---
+import type { SupportedLang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
 interface Props {
-  dropperHelper?: string;
-  dropperError?: string;
+  currentLang?: SupportedLang;
 }
 
-const {
-  dropperHelper = 'Click the lens to select any pixel on screen',
-  dropperError = 'Screen dropper is supported in Chrome, Edge, and Opera. On other browsers, use the image uploader below!'
-} = Astro.props;
+const { currentLang = 'en' } = Astro.props;
+const t = useTranslations(currentLang);
 ---
 <div class="flex flex-col items-center justify-center py-4 w-full">
   <button
     id="dropper-button"
     type="button"
-    class="group relative flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-tr from-surface-tertiary via-surface-secondary to-surface-tertiary text-text-primary shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 ring-4 ring-border/80 hover:ring-border-strong cursor-pointer focus:outline-none focus:ring-icon"
-    title="Click to pick any color from your screen"
-    aria-label="Pick color from your screen"
+    class="group relative flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-tr from-surface-tertiary via-surface-secondary to-surface-tertiary text-text-primary shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 ring-4 ring-border/80 hover:ring-border-strong cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-accent-purple/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface touch-manipulation"
+    title={t('dropperBtnTitle')}
+    aria-label={t('dropperBtnAriaLabel')}
+    aria-pressed="false"
+    aria-describedby="dropper-helper-text"
+    data-picking-text={t('dropperPickingText')}
+    data-default-helper={t('dropperHelper')}
   >
-    <!-- Background pulse indicator -->
-    <span class="absolute inset-0 rounded-full bg-accent-purple/20 group-hover:bg-accent-purple/40 blur-md transition-all"></span>
+    <!-- Background pulse ring -->
+    <span class="absolute inset-0 rounded-full bg-gradient-to-r from-accent-purple/20 via-accent-cyan/20 to-accent-pink/20 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300"></span>
     
+    <!-- Animated border ring -->
+    <span class="absolute inset-[-3px] rounded-full border-2 border-transparent group-hover:border-accent-purple/50 group-focus-visible:border-accent-purple transition-all duration-300"></span>
+    
+    <!-- Inner glow -->
+    <span class="absolute inset-1 rounded-full bg-gradient-to-br from-accent-purple/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+
     <!-- SVG Icon -->
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      class="w-10 h-10 text-text-primary group-hover:rotate-12 transition-transform duration-300 z-10"
+      class="w-10 h-10 text-text-primary group-hover:rotate-12 group-active:rotate-0 group-active:scale-95 transition-all duration-300 z-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
+      aria-hidden="true"
     >
       <path d="m2 22 1-1h3l9-9" />
       <path d="M3 21v-3l9-9" />
       <path d="m15 6 3-3a2.12 2.12 0 0 1 3 3l-3 3" />
       <path d="m13 8 3 3" />
     </svg>
+
+    <!-- Active state indicator -->
+    <span id="dropper-active-indicator" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-accent-purple scale-0 transition-transform duration-200 origin-center" aria-hidden="true"></span>
   </button>
   
-  <p class="text-xs text-text-muted mt-3 font-medium text-center">
-    {dropperHelper}
+  <p id="dropper-helper-text" class="text-xs text-text-muted mt-3 font-medium text-center transition-colors duration-200 group-data-[active=true]:text-accent-purple">
+    {t('dropperHelper')}
   </p>
 
-  <div id="dropper-error" class="hidden text-xs text-warning mt-2 bg-warning-bg border border-warning/30 px-3 py-1.5 rounded-md text-center max-w-xs">
-    {dropperError}
+  <div id="dropper-error" class="hidden text-xs text-warning mt-2 bg-warning-bg border border-warning/30 px-3 py-1.5 rounded-md text-center max-w-xs" role="alert" aria-live="polite">
+    {t('dropperError')}
   </div>
 </div>
 
 <script>
   const dropperBtn = document.getElementById('dropper-button');
   const dropperError = document.getElementById('dropper-error');
+  const dropperHelperText = document.getElementById('dropper-helper-text');
+  const activeIndicator = document.getElementById('dropper-active-indicator');
 
   if (dropperBtn) {
-    dropperBtn.addEventListener('click', async () => {
+    const pickingText = dropperBtn.getAttribute('data-picking-text') || t('dropperPickingText');
+    const defaultHelperText = dropperBtn.getAttribute('data-default-helper') || t('dropperHelper');
+
+    const handleDropperClick = async () => {
       if ('EyeDropper' in window) {
         try {
+          // Set active state for visual feedback
+          dropperBtn.dataset.active = 'true';
+          dropperBtn.setAttribute('aria-pressed', 'true');
+          if (activeIndicator) activeIndicator.classList.remove('scale-0');
+          if (activeIndicator) activeIndicator.classList.add('scale-100');
+          if (dropperHelperText) dropperHelperText.textContent = pickingText;
+
           // @ts-ignore - EyeDropper is supported in chromium browsers
           const eyeDropper = new window.EyeDropper();
           const result = await eyeDropper.open();
+          
           if (result && result.sRGBHex) {
             const hexColor = result.sRGBHex.toUpperCase();
             
@@ -74,12 +101,38 @@ const {
           }
         } catch (err) {
           console.log('EyeDropper closed or canceled by user', err);
+        } finally {
+          // Reset active state
+          dropperBtn.dataset.active = 'false';
+          dropperBtn.setAttribute('aria-pressed', 'false');
+          if (activeIndicator) activeIndicator.classList.remove('scale-100');
+          if (activeIndicator) activeIndicator.classList.add('scale-0');
+          if (dropperHelperText) dropperHelperText.textContent = defaultHelperText;
         }
       } else {
         if (dropperError) {
           dropperError.classList.remove('hidden');
         }
       }
+    };
+
+    dropperBtn.addEventListener('click', handleDropperClick);
+
+    // Keyboard support
+    dropperBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleDropperClick();
+      }
+    });
+
+    // Reset active state on blur
+    dropperBtn.addEventListener('blur', () => {
+      dropperBtn.dataset.active = 'false';
+      dropperBtn.setAttribute('aria-pressed', 'false');
+      if (activeIndicator) activeIndicator.classList.remove('scale-100');
+      if (activeIndicator) activeIndicator.classList.add('scale-0');
+      if (dropperHelperText) dropperHelperText.textContent = defaultHelperText;
     });
   }
 </script>

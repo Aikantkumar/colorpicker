@@ -1,0 +1,5 @@
+# Robots.txt for ColorPicker
+User-agent: *
+Allow: /
+
+Sitemap: https://example.com/sitemap-index.xml
