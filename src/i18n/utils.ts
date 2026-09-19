@@ -22,7 +22,7 @@ export function getLanguagePath(lang: SupportedLang): string {
   return `/${lang}/`;
 }
 
-export function getHreflangLinks(siteUrl: string = 'https://pickcolor.online') {
+export function getHreflangLinks(siteUrl: string = 'https://findandextractcolors.com') {
   const cleanSiteUrl = siteUrl.endsWith('/') ? siteUrl.slice(0, -1) : siteUrl;
   
   const links = (Object.keys(LANGUAGES) as SupportedLang[]).map((lang) => {

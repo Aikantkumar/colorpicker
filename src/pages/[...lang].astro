@@ -5,6 +5,7 @@ import DropperButton from '../components/DropperButton.astro';
 import ImageUploader from '../components/ImageUploader.astro';
 import MagnifierCanvas from '../components/MagnifierCanvas.astro';
 import ColorSwatch from '../components/ColorSwatch.astro';
+import ColorPalette from '../components/ColorPalette.astro';
 import SeoContent from '../components/SeoContent.astro';
 import Footer from '../components/Footer.astro';
 import { LANGUAGES, DEFAULT_LANG, type SupportedLang } from '../i18n/ui';
@@ -76,6 +77,11 @@ const faqLinkPath = lang === DEFAULT_LANG ? '/faq/' : `/${lang}/faq/`;
     <!-- Mesh & 200px Zoom Lens Canvas Section -->
     <section class="w-full mt-4">
       <MagnifierCanvas currentLang={lang} />
+    </section>
+
+    <!-- Dominant Color Palette Section -->
+    <section class="w-full mt-4">
+      <ColorPalette currentLang={lang} />
     </section>
 
     <!-- 800 - 1200 Words SEO Guide Content (After main components) -->

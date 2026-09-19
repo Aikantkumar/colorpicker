@@ -432,3 +432,103 @@ html.dark .bg-light-color-palette {
 .shadow-lg { box-shadow: 0 10px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color); }
 .shadow-xl { box-shadow: 0 20px 25px -5px var(--shadow-color), 0 8px 10px -6px var(--shadow-color); }
 .shadow-2xl { box-shadow: 0 25px 50px -12px var(--shadow-color-strong); }
+
+/* Sparkle effect for icons */
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
+@keyframes sparkle-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.sparkle-icon {
+  position: relative;
+}
+
+.sparkle-icon::before,
+.sparkle-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    var(--accent-purple) 90deg,
+    var(--accent-cyan) 180deg,
+    var(--accent-pink) 270deg,
+    transparent 360deg
+  );
+  border-radius: inherit;
+  opacity: 0;
+  animation: sparkle-pulse 2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.sparkle-icon::after {
+  animation-delay: 1s;
+  filter: blur(4px);
+}
+
+.sparkle-icon.sparkle-active::before,
+.sparkle-icon.sparkle-active::after {
+  opacity: 1;
+}
+
+@keyframes sparkle-particle {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(var(--tx, 0), var(--ty, 0)) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx2, 0), var(--ty2, 0)) scale(0);
+  }
+}
+
+.sparkle-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--accent-purple);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.1s, transform 0.1s;
+}
+
+.sparkle-icon.sparkle-active .sparkle-particle {
+  animation: sparkle-particle 1.5s ease-out forwards;
+}
+
+.sparkle-particle:nth-child(1) { --tx: -12px; --ty: -12px; --tx2: -20px; --ty2: -20px; animation-delay: 0ms; }
+.sparkle-particle:nth-child(2) { --tx: 12px; --ty: -12px; --tx2: 20px; --ty2: -20px; animation-delay: 100ms; }
+.sparkle-particle:nth-child(3) { --tx: -12px; --ty: 12px; --tx2: -20px; --ty2: 20px; animation-delay: 200ms; }
+.sparkle-particle:nth-child(4) { --tx: 12px; --ty: 12px; --tx2: 20px; --ty2: 20px; animation-delay: 300ms; }
+.sparkle-particle:nth-child(5) { --tx: 0; --ty: -16px; --tx2: 0; --ty2: -28px; animation-delay: 400ms; background: var(--accent-cyan); }
+.sparkle-particle:nth-child(6) { --tx: 16px; --ty: 0; --tx2: 28px; --ty2: 0; animation-delay: 500ms; background: var(--accent-pink); }
+.sparkle-particle:nth-child(7) { --tx: 0; --ty: 16px; --tx2: 0; --ty2: 28px; animation-delay: 600ms; background: var(--accent-purple); }
+.sparkle-particle:nth-child(8) { --tx: -16px; --ty: 0; --tx2: -28px; --ty2: 0; animation-delay: 700ms; background: var(--accent-cyan); }

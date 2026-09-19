@@ -38,7 +38,7 @@ const t = useTranslations(currentLang);
 
     <!-- Canvas wrapper -->
     <div class="relative w-full flex justify-center items-center bg-surface-tertiary/50 min-h-[320px] cursor-crosshair overflow-hidden" id="canvas-wrapper">
-      <canvas id="color-canvas" data-canvas-title={t('meshCanvasTitle')} data-canvas-subtitle={t('meshCanvasSubtitle')} class="max-w-full h-auto block select-none"></canvas>
+      <canvas id="color-canvas" data-magnifier-canvas="true" data-canvas-title={t('meshCanvasTitle')} data-canvas-subtitle={t('meshCanvasSubtitle')} class="max-w-full h-auto block select-none"></canvas>
       
       <!-- Live Lens Info Tooltip -->
       <div id="lens-tooltip" class="pointer-events-none fixed z-50 hidden transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
@@ -250,6 +250,9 @@ const t = useTranslations(currentLang);
     });
 
     createDefaultMesh();
+
+    // Notify palette component that default mesh is ready
+    window.dispatchEvent(new CustomEvent('defaultmeshcreated'));
 
     window.addEventListener('resize', () => {
       if (loadedImage) renderCanvas();

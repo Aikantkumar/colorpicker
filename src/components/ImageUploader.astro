@@ -28,22 +28,31 @@ const t = useTranslations(currentLang);
       aria-hidden="true"
     />
 
-    <!-- Upload icon with animated states -->
+<!-- Upload icon with animated states and sparkle effect -->
     <div class="relative w-14 h-14 rounded-full bg-gradient-to-br from-surface-tertiary to-surface-secondary flex items-center justify-center mb-4 group-hover:scale-110 group-focus-within:scale-110 group-data-[dragover=true]:scale-110 group-data-[dragover=true]:bg-accent-purple/20 transition-all duration-300">
       <!-- Background pulse when dragging -->
       <span class="absolute inset-0 rounded-full bg-accent-purple/20 blur-lg opacity-0 group-data-[dragover=true]:opacity-100 transition-opacity duration-300 animate-pulse"></span>
       
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="w-7 h-7 text-icon group-hover:text-accent-purple group-focus-within:text-accent-purple group-data-[dragover=true]:text-white transition-all duration-300 z-10"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="1.5"
-        aria-hidden="true"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M16 10l-4-4m0 0l-4 4m4-4v12" />
-      </svg>
+      <div class="relative w-7 h-7 z-10 sparkle-icon group-hover:sparkle-active group-focus-within:sparkle-active group-data-[dragover=true]:sparkle-active" aria-hidden="true">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-full h-full text-icon group-hover:text-accent-purple group-focus-within:text-accent-purple group-data-[dragover=true]:text-white transition-all duration-300"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M16 10l-4-4m0 0l-4 4m4-4v12" />
+        </svg>
+        <span class="sparkle-particle" aria-hidden="true"></span>
+        <span class="sparkle-particle" aria-hidden="true"></span>
+        <span class="sparkle-particle" aria-hidden="true"></span>
+        <span class="sparkle-particle" aria-hidden="true"></span>
+        <span class="sparkle-particle" aria-hidden="true"></span>
+        <span class="sparkle-particle" aria-hidden="true"></span>
+        <span class="sparkle-particle" aria-hidden="true"></span>
+        <span class="sparkle-particle" aria-hidden="true"></span>
+      </div>
       
       <!-- Upload progress ring (hidden by default) -->
       <svg class="absolute inset-0 w-full h-full -rotate-90 transform" aria-hidden="true">

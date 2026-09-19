@@ -12,11 +12,11 @@ export interface Props {
 const { title, description, lang = 'en' } = Astro.props;
 
 // Generate hreflang links for SEO
-const hreflangLinks = getHreflangLinks('https://pickcolor.online');
+const hreflangLinks = getHreflangLinks('https://findandextractcolors.com');
 
 // Current canonical URL
 const canonicalPath = lang === 'en' ? '/' : `/${lang}/`;
-const canonicalUrl = `https://pickcolor.online${canonicalPath}`;
+const canonicalUrl = `https://findandextractcolors.com${canonicalPath}`;
 ---
 <!DOCTYPE html>
 <html lang={lang} class="scroll-smooth">
@@ -32,7 +32,7 @@ const canonicalUrl = `https://pickcolor.online${canonicalPath}`;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="FindandExtractcolors" />
+    <meta name="apple-mobile-web-app-title" content="Find and Extract Colors" />
     <link rel="manifest" href="/site.webmanifest" />
 
     <!-- Inline Script to prevent FOUC (Flash of wrong theme) -->
@@ -66,7 +66,7 @@ const canonicalUrl = `https://pickcolor.online${canonicalPath}`;
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content={lang} />
-    <meta property="og:site_name" content="Color Extractor & Color Finder" />
+    <meta property="og:site_name" content="Find and Extract Colors" />
 
     <!-- Twitter/X Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -83,7 +83,7 @@ const canonicalUrl = `https://pickcolor.online${canonicalPath}`;
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "Color Extractor & Color Finder",
+      "name": "Find and Extract Colors",
       "url": canonicalUrl,
       "description": description,
       "applicationCategory": "DeveloperApplication",

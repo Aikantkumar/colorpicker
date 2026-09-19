@@ -1,13 +1,89 @@
 ---
-import { DEFAULT_LANG } from '../i18n/ui';
-import { getLanguagePath } from '../i18n/utils';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
-const lang = DEFAULT_LANG;
-const redirectPath = getLanguagePath(lang) + 'privacy/';
+const pageTitle = 'Privacy Policy';
+const pageDescription = 'How we handle your data and protect your privacy';
+
+const currentYear = new Date().getFullYear();
+const lastUpdated = `January ${currentYear}`;
 ---
 
-<script is:inline>
-  window.location.href = "/en/privacy/";
-</script>
+<Layout title={pageTitle} description={pageDescription} lang="en">
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 flex flex-col items-center">
+    <!-- Header -->
+    <Header
+      currentLang="en"
+      title="Privacy Policy"
+      subtitle="How we handle your data and protect your privacy"
+    />
 
-<meta http-equiv="refresh" content="0; url=/en/privacy/" />
+    <!-- Privacy Policy Content -->
+    <article class="w-full max-w-3xl prose prose-neutral dark:prose-invert mt-8">
+      <div class="mb-8 text-sm text-text-muted">
+        <time datetime={`${currentYear}-01-01`}>Last Updated: {lastUpdated}</time>
+      </div>
+
+      <section class="mb-10">
+        <p class="text-text-secondary leading-relaxed">At Find and Extract Colors, we take your privacy seriously. This Privacy Policy explains what information we collect, how we use it, and your rights regarding your data.</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Information We Collect</h2>
+        <p class="text-text-secondary leading-relaxed mb-4">Our tool processes everything locally in your browser. We do not upload your images, screenshots, or color data to any server. The only data we may collect includes:</p>
+        <ul class="list-disc list-inside space-y-2 text-text-secondary leading-relaxed">
+          <li>Anonymous usage analytics (page views, feature usage) via privacy-respecting analytics</li>
+          <li>Browser language preference for localization</li>
+          <li>Theme preference (light/dark mode) stored in localStorage</li>
+        </ul>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">We Do NOT Collect:</h2>
+        <p class="text-text-secondary leading-relaxed mb-4">Personal identifiers, images, color values, IP addresses, or any data that could personally identify you.</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Local Processing</h2>
+        <p class="text-text-secondary leading-relaxed">All color extraction happens entirely in your browser using the EyeDropper API and HTML5 Canvas. Your images never leave your device.</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Cookies and Storage</h2>
+        <p class="text-text-secondary leading-relaxed">We use localStorage only to save your theme preference. No tracking cookies, no third-party cookies, no advertising cookies.</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Third-Party Services</h2>
+        <p class="text-text-secondary leading-relaxed">We use Google Fonts for typography. Google may collect standard browser data when loading fonts. See Google's Privacy Policy for details.</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Your Rights</h2>
+        <p class="text-text-secondary leading-relaxed">You have the right to access, delete, or restrict any personal data. Since we don't collect personal data, there's nothing to access or delete. You can clear localStorage at any time in your browser settings.</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Contact Us</h2>
+        <p class="text-text-secondary leading-relaxed">Questions about this policy? Contact us at <a href="mailto:privacy@findandextractcolors.com" class="text-primary hover:underline font-medium">privacy@findandextractcolors.com</a>.</p>
+      </section>
+    </article>
+
+    <!-- Back to Main Tool CTA -->
+    <div class="mt-10 text-center">
+      <a
+        href="/"
+        class="inline-flex items-center space-x-2 bg-neutral-900 text-white hover:bg-neutral-800 px-6 py-3 rounded-xl text-sm font-semibold shadow-md hover:shadow-lg transition-all"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        <span>Back to Color Extractor</span>
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <Footer currentLang="en" />
+  </main>
+</Layout>

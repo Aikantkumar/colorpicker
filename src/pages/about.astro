@@ -1,13 +1,79 @@
 ---
-import { DEFAULT_LANG } from '../i18n/ui';
-import { getLanguagePath } from '../i18n/utils';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
-const lang = DEFAULT_LANG;
-const redirectPath = getLanguagePath(lang) + 'about/';
+const pageTitle = 'About Us';
+const pageDescription = 'Learn about the team behind Find and Extract Colors';
 ---
 
-<script is:inline>
-  window.location.href = "/en/about/";
-</script>
+<Layout title={pageTitle} description={pageDescription} lang="en">
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 flex flex-col items-center">
+    <!-- Header -->
+    <Header
+      currentLang="en"
+      title="About Us"
+      subtitle="Learn about the team behind Find and Extract Colors"
+    />
 
-<meta http-equiv="refresh" content="0; url=/en/about/" />
+    <!-- About Content -->
+    <article class="w-full max-w-3xl prose prose-neutral dark:prose-invert mt-8 space-y-10">
+      <section>
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Our Mission</h2>
+        <p class="text-text-secondary leading-relaxed">Provide the fastest, most accurate, and completely free color extraction tool for designers, developers, and creators worldwide.</p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Our Story</h2>
+        <p class="text-text-secondary leading-relaxed">Find and Extract Colors was born from frustration with existing color pickers that were slow, required registration, uploaded images to servers, or lacked precision. We wanted a tool that works instantly, locally, and accurately.</p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Why Choose Us</h2>
+        <ul class="list-disc list-inside space-y-3 text-text-secondary leading-relaxed">
+          <li>100% local processing - your images never leave your browser</li>
+          <li>200px zoom lens for pixel-perfect precision</li>
+          <li>Supports both screen picking and image uploads (PNG, JPEG, SVG)</li>
+          <li>Instantly outputs HEX, RGB, and HSL formats</li>
+          <li>No registration, no ads, no tracking</li>
+          <li>Available in 8 languages</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-text-primary mb-4">The Team</h2>
+        <p class="text-text-secondary leading-relaxed">A small group of designers and developers passionate about color theory and developer experience.</p>
+      </section>
+
+      <section class="text-center pt-4 border-t border-border">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Get in Touch</h2>
+        <p class="text-text-secondary leading-relaxed mb-6">Feedback, feature requests, or just want to say hi?</p>
+        <a
+          href="/contact/"
+          class="inline-flex items-center space-x-2 bg-neutral-900 text-white hover:bg-neutral-800 px-6 py-3 rounded-xl text-sm font-semibold shadow-md hover:shadow-lg transition-all"
+        >
+          <span>Contact Us</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </section>
+    </article>
+
+    <!-- Back to Main Tool CTA -->
+    <div class="mt-10 text-center">
+      <a
+        href="/"
+        class="inline-flex items-center space-x-2 bg-neutral-900 text-white hover:bg-neutral-800 px-6 py-3 rounded-xl text-sm font-semibold shadow-md hover:shadow-lg transition-all"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        <span>Back to Color Extractor</span>
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <Footer currentLang="en" />
+  </main>
+</Layout>

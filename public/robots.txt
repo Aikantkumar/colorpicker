@@ -1,5 +1,5 @@
-# Robots.txt for ColorPicker
+# Robots.txt for Find and Extract Colors
 User-agent: *
 Allow: /
 
-Sitemap: https://example.com/sitemap-index.xml
+Sitemap: https://findandextractcolors.com/sitemap-index.xml

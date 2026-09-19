@@ -1,13 +1,91 @@
 ---
-import { DEFAULT_LANG } from '../i18n/ui';
-import { getLanguagePath } from '../i18n/utils';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
-const lang = DEFAULT_LANG;
-const redirectPath = getLanguagePath(lang) + 'terms/';
+const pageTitle = 'Terms & Conditions';
+const pageDescription = 'Read these terms carefully before using our service';
+
+const currentYear = new Date().getFullYear();
+const lastUpdated = `January ${currentYear}`;
 ---
 
-<script is:inline>
-  window.location.href = "/en/terms/";
-</script>
+<Layout title={pageTitle} description={pageDescription} lang="en">
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 flex flex-col items-center">
+    <!-- Header -->
+    <Header
+      currentLang="en"
+      title="Terms & Conditions"
+      subtitle="Read these terms carefully before using our service"
+    />
 
-<meta http-equiv="refresh" content="0; url=/en/terms/" />
+    <!-- Terms & Conditions Content -->
+    <article class="w-full max-w-3xl prose prose-neutral dark:prose-invert mt-8">
+      <div class="mb-8 text-sm text-text-muted">
+        <time datetime={`${currentYear}-01-01`}>Last Updated: {lastUpdated}</time>
+      </div>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Acceptance of Terms</h2>
+        <p class="text-text-secondary leading-relaxed">By accessing and using Find and Extract Colors, you agree to be bound by these Terms and Conditions. If you disagree with any part, please do not use our service.</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Use License</h2>
+        <p class="text-text-secondary leading-relaxed">We grant you a free, non-exclusive, non-transferable license to use our color extraction tool for personal and commercial purposes.</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Restrictions</h2>
+        <p class="text-text-secondary leading-relaxed mb-4">You agree not to:</p>
+        <ul class="list-disc list-inside space-y-2 text-text-secondary leading-relaxed">
+          <li>Reverse engineer or attempt to extract source code</li>
+          <li>Use the service for illegal activities</li>
+          <li>Overload or disrupt the service</li>
+          <li>Remove copyright or proprietary notices</li>
+        </ul>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Intellectual Property</h2>
+        <p class="text-text-secondary leading-relaxed">All content, design, and code (except user-generated color data) are owned by Find and Extract Colors. Color values you extract are yours to keep.</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Disclaimer of Warranties</h2>
+        <p class="text-text-secondary leading-relaxed">The service is provided "as is" without warranties of any kind. We do not guarantee uninterrupted or error-free operation. Color accuracy depends on your display calibration.</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Limitation of Liability</h2>
+        <p class="text-text-secondary leading-relaxed">We are not liable for damages arising from use or inability to use the service, including inaccurate color values or data loss.</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Changes to Terms</h2>
+        <p class="text-text-secondary leading-relaxed">We may update these terms at any time. Continued use constitutes acceptance of new terms.</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold text-text-primary mb-4">Governing Law</h2>
+        <p class="text-text-secondary leading-relaxed">These terms are governed by international digital service standards.</p>
+      </section>
+    </article>
+
+    <!-- Back to Main Tool CTA -->
+    <div class="mt-10 text-center">
+      <a
+        href="/"
+        class="inline-flex items-center space-x-2 bg-neutral-900 text-white hover:bg-neutral-800 px-6 py-3 rounded-xl text-sm font-semibold shadow-md hover:shadow-lg transition-all"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        <span>Back to Color Extractor</span>
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <Footer currentLang="en" />
+  </main>
+</Layout>
