@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "deploy": "astro build && rm -f dist/client/wrangler.json && wrangler pages deploy dist/client --project-name=findandextractcolors",
+    "cf:preview": "astro build && wrangler pages dev dist/client --project-name=findandextractcolors"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -21,8 +23,10 @@
     "esbuild": true
   },
   "devDependencies": {
+    "@astrojs/cloudflare": "^14.3.2",
     "@astrojs/tailwind": "^6.0.2",
     "@tailwindcss/vite": "^4.3.3",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.3",
+    "wrangler": "^4.135.0"
   }
 }
