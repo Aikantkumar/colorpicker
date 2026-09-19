@@ -17,9 +17,10 @@ const t = useTranslations(lang);
 
 const pageTitle = t('aboutTitle');
 const pageDescription = t('aboutSubtitle');
+const canonicalUrl = `https://findandextractcolors.com/${lang}/about/`;
 ---
 
-<Layout title={pageTitle} description={pageDescription} lang={lang}>
+<Layout title={pageTitle} description={pageDescription} lang={lang} canonicalUrl={canonicalUrl}>
   <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 flex flex-col items-center">
     <!-- Header -->
     <Header

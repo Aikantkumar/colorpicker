@@ -7,16 +7,16 @@ export interface Props {
   title: string;
   description: string;
   lang?: SupportedLang;
+  canonicalUrl?: string;
 }
 
-const { title, description, lang = 'en' } = Astro.props;
+const { title, description, lang = 'en', canonicalUrl } = Astro.props;
 
 // Generate hreflang links for SEO
 const hreflangLinks = getHreflangLinks('https://findandextractcolors.com');
 
-// Current canonical URL
-const canonicalPath = lang === 'en' ? '/' : `/${lang}/`;
-const canonicalUrl = `https://findandextractcolors.com${canonicalPath}`;
+// Current canonical URL - use provided or derive from current page
+const finalCanonicalUrl = canonicalUrl || `https://findandextractcolors.com${Astro.url.pathname}`;
 ---
 <!DOCTYPE html>
 <html lang={lang} class="scroll-smooth">
@@ -25,7 +25,7 @@ const canonicalUrl = `https://findandextractcolors.com${canonicalPath}`;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalUrl} />
+    <link rel="canonical" href={finalCanonicalUrl} />
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -64,7 +64,7 @@ const canonicalUrl = `https://findandextractcolors.com${canonicalPath}`;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:url" content={finalCanonicalUrl} />
     <meta property="og:locale" content={lang} />
     <meta property="og:site_name" content="Find and Extract Colors" />
 
@@ -72,7 +72,7 @@ const canonicalUrl = `https://findandextractcolors.com${canonicalPath}`;
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={canonicalUrl} />
+    <meta name="twitter:image" content={finalCanonicalUrl} />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -84,7 +84,7 @@ const canonicalUrl = `https://findandextractcolors.com${canonicalPath}`;
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "Find and Extract Colors",
-      "url": canonicalUrl,
+      "url": finalCanonicalUrl,
       "description": description,
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "All",
@@ -95,6 +95,9 @@ const canonicalUrl = `https://findandextractcolors.com${canonicalPath}`;
       },
       "inLanguage": ["en", "es", "ja", "fr", "de", "pt", "ko", "it"]
     })} />
+
+    <!-- Page-specific JSON-LD schemas (e.g., FAQPage) -->
+    <slot name="head" />
   </head>
   <body class="font-sans antialiased min-h-screen relative">
     

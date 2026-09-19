@@ -10,6 +10,7 @@ const t = useTranslations('en');
 
 const pageTitle = `${t('headerTitle')} FAQ | ${t('siteTitle')}`;
 const pageDescription = `${t('siteDescription')} FAQ`;
+const canonicalUrl = 'https://findandextractcolors.com/faq/';
 
 // Generate FAQPage JSON-LD Schema
 const faqItems = getFaqItems('en');
@@ -27,7 +28,7 @@ const faqSchema = {
 };
 ---
 
-<Layout title={pageTitle} description={pageDescription} lang="en">
+<Layout title={pageTitle} description={pageDescription} lang="en" canonicalUrl={canonicalUrl}>
   <!-- Inject JSON-LD Schema for Google FAQ Rich Snippets -->
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
 

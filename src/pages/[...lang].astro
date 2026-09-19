@@ -30,9 +30,10 @@ const seoTitle = t('homeSeoTitle');
 const seoDescription = t('homeSeoDescription');
 
 const faqLinkPath = lang === DEFAULT_LANG ? '/faq/' : `/${lang}/faq/`;
+const canonicalUrl = lang === DEFAULT_LANG ? 'https://findandextractcolors.com/' : `https://findandextractcolors.com/${lang}/`;
 ---
 
-<Layout title={seoTitle} description={seoDescription} lang={lang}>
+<Layout title={seoTitle} description={seoDescription} lang={lang} canonicalUrl={canonicalUrl}>
   <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 flex flex-col items-center relative">
     
     <!-- Premium Header Component -->

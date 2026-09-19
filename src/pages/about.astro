@@ -5,9 +5,10 @@ import Footer from '../components/Footer.astro';
 
 const pageTitle = 'About Us';
 const pageDescription = 'Learn about the team behind Find and Extract Colors';
+const canonicalUrl = 'https://findandextractcolors.com/about/';
 ---
 
-<Layout title={pageTitle} description={pageDescription} lang="en">
+<Layout title={pageTitle} description={pageDescription} lang="en" canonicalUrl={canonicalUrl}>
   <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 flex flex-col items-center">
     <!-- Header -->
     <Header
