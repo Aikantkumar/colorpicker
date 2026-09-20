@@ -10,7 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "astro build && rm -rf .wrangler/deploy dist/client/wrangler.json && wrangler pages deploy dist/client --project-name=findandextractcolors",
+    "deploy": "astro build && wrangler pages deploy dist/client --project-name findandextractcolors-com --commit-dirty=true",
     "cf:preview": "astro build && wrangler pages dev dist/client --project-name=findandextractcolors"
   },
   "dependencies": {

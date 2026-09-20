@@ -18,12 +18,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  adapter: cloudflare({
-    platformProxy: {
-      enabled: true,
-    },
-    prerenderEnvironment: 'node',
-  }),
+  adapter: cloudflare(),
   output: 'static',
   prerender: false,
 });
