@@ -10,23 +10,22 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "astro build && wrangler pages deploy dist/client --project-name findandextractcolors-com --commit-dirty=true",
+    "deploy": "astro build && wrangler pages deploy dist/client --project-name=findandextractcolors",
     "cf:preview": "astro build && wrangler pages dev dist/client --project-name=findandextractcolors"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
     "@astrojs/sitemap": "^3.7.4",
-    "astro": "^7.2.10",
-    "typescript": "^7.0.2"
+    "astro": "^7.1.5"
   },
   "allowScripts": {
     "esbuild": true
   },
   "devDependencies": {
-    "@astrojs/cloudflare": "^14.3.2",
-    "@astrojs/tailwind": "^6.0.2",
+    "@astrojs/cloudflare": "^14.0.0",
     "@tailwindcss/vite": "^4.3.3",
     "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3",
     "wrangler": "^4.135.0"
   }
 }

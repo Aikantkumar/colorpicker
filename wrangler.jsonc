@@ -4,5 +4,9 @@
   "pages_build_output_dir": "./dist/client",
   "observability": {
     "enabled": true
+  },
+  "assets": {
+    "binding": "SITE_ASSETS",
+    "directory": "./dist/client"
   }
 }
