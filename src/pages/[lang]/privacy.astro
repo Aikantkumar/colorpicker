@@ -6,13 +6,13 @@ import { LANGUAGES, DEFAULT_LANG, type SupportedLang } from '../../i18n/ui';
 import { useTranslations } from '../../i18n/utils';
 
 export function getStaticPaths() {
-  return Object.keys(LANGUAGES).map((code) => ({
-    params: { lang: code },
+  const languages = Object.keys(LANGUAGES).filter((l) => l !== DEFAULT_LANG) as SupportedLang[];
+  return languages.map((lang) => ({
+    params: { lang },
   }));
 }
 
-const { lang: langParam } = Astro.params;
-const lang = (langParam as SupportedLang) || DEFAULT_LANG;
+const { lang } = Astro.params as { lang: SupportedLang };
 const t = useTranslations(lang);
 
 const pageTitle = t('privacyTitle');

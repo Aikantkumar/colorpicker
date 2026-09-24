@@ -10,8 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "astro build && wrangler pages deploy dist/client --project-name=findandextractcolors",
-    "cf:preview": "astro build && wrangler pages dev dist/client --project-name=findandextractcolors"
+    "deploy": "astro build && wrangler pages deploy dist --project-name=findandextractcolors",
+    "cf:preview": "astro build && wrangler pages dev dist --project-name=findandextractcolors"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
