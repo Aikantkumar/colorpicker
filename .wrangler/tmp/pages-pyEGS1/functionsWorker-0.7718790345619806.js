@@ -27,7 +27,7 @@ async function onRequest2(context) {
 }
 __name(onRequest2, "onRequest");
 
-// ../.wrangler/tmp/pages-7fU5ly/functionsRoutes-0.3772339437541047.mjs
+// ../.wrangler/tmp/pages-pyEGS1/functionsRoutes-0.344078481987377.mjs
 var routes = [
   {
     routePath: "/robots.txt",

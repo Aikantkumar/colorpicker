@@ -21,6 +21,16 @@ const finalCanonicalUrl = canonicalUrl || `https://findandextractcolors.com${Ast
 <!DOCTYPE html>
 <html lang={lang} class="scroll-smooth">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-TC5PSQECVS"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-TC5PSQECVS');
+    </script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
