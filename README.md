@@ -1,46 +1,36 @@
-# Astro Starter Kit: Basics
+# Find and Extract Colors
 
-```sh
-npm create astro@latest -- --template basics
-```
+Free online color extractor and color picker. Pick colors from your screen or extract palettes from any image entirely in your browser, with no uploads and no account required.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Overview
 
-## 🚀 Project Structure
+Find and Extract Colors is a fast, privacy-first color tool built for designers, developers, and creators. It lets you extract accurate HEX, RGB, and HSL color codes from any image or screen pixel in seconds. Every operation runs locally in your browser, so your images never leave your device and nothing is tracked or stored on a server. The tool combines a high-magnification zoom lens with dominant-palette extraction, giving you both pinpoint precision and a broader view of an image's color composition.
 
-Inside of your Astro project, you'll see the following folders and files:
+## Key Features
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+- 200px zoom lens for pixel-perfect color picking
+- Screen color picking directly from your display
+- Image upload support for PNG, JPEG, and SVG files
+- Instant output in HEX, RGB, and HSL formats
+- Automatic dominant color palette extraction
+- 100% local processing so images never leave your browser
+- No registration, no ads, no tracking
+- Available in 8 languages for global use
+- Responsive, accessible interface that works on desktop and mobile
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Use Cases
 
-## 🧞 Commands
+- Designers matching brand or theme colors from mockups and references
+- Developers sampling colors from screenshots for UI work
+- Photographers and artists building palettes from photos
+- Marketers ensuring consistent brand colors across assets
+- Students and hobbyists learning about color theory
+- Anyone who needs quick, accurate color codes without installing software
 
-All commands are run from the root of the project, from a terminal:
+## Getting Started
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Clone the repository and install dependencies, then start the development server. Open the local address shown in your terminal to use the tool. For a production build, run the build command followed by the preview command. The project is built with Astro and Tailwind CSS v4, with pages under src/pages and components under src/components.
 
-## 👀 Want to learn more?
+## Pricing and Plans
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Completely free. There are no paid tiers, no premium features, and no usage limits. Every feature, including screen picking, image uploads, palette extraction, and all export formats, is available to everyone at no cost.

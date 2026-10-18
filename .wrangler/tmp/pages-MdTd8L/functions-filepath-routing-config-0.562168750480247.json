@@ -1,0 +1,21 @@
+{
+  "routes": [
+    {
+      "routePath": "/robots.txt",
+      "mountPath": "/",
+      "method": "",
+      "module": [
+        "robots.txt.js:onRequest"
+      ]
+    },
+    {
+      "routePath": "/",
+      "mountPath": "/",
+      "method": "",
+      "middleware": [
+        "_middleware.js:onRequest"
+      ]
+    }
+  ],
+  "baseURL": "/"
+}
