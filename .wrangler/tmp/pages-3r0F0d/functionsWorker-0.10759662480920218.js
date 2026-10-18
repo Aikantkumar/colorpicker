@@ -4,13 +4,40 @@ var __name = (target, value) => __defProp(target, "name", { value, configurable:
 // robots.txt.js
 async function onRequest(context) {
   const { request } = context;
-  const host = new URL(request.url).host;
-  let body = "User-agent: *\nAllow: /\n";
-  if (host.endsWith(".pages.dev")) {
-    body = "User-agent: *\nDisallow: /\n";
+  const hostname = new URL(request.url).hostname;
+  if (hostname.endsWith(".pages.dev")) {
+    return new Response(
+      "User-agent: *\nDisallow: /\n",
+      {
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "Cache-Control": "no-cache"
+        }
+      }
+    );
   }
+  const body = `# Robots.txt for Find and Extract Colors
+# https://findandextractcolors.com
+
+User-agent: *
+Allow: /
+
+# Disallow error pages & non-indexable utility resources
+Disallow: /404
+Disallow: /500
+Disallow: /404.html
+Disallow: /500.html
+
+# XML Sitemaps
+Sitemap: https://findandextractcolors.com/sitemap-index.xml
+Sitemap: https://findandextractcolors.com/sitemap-0.xml
+Sitemap: https://findandextractcolors.com/sitemap.xml
+`;
   return new Response(body, {
-    headers: { "Content-Type": "text/plain" }
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-cache"
+    }
   });
 }
 __name(onRequest, "onRequest");
@@ -27,7 +54,7 @@ async function onRequest2(context) {
 }
 __name(onRequest2, "onRequest");
 
-// ../.wrangler/tmp/pages-pyEGS1/functionsRoutes-0.344078481987377.mjs
+// ../.wrangler/tmp/pages-3r0F0d/functionsRoutes-0.8272710166524025.mjs
 var routes = [
   {
     routePath: "/robots.txt",
